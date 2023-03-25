@@ -1,0 +1,11 @@
+{
+  "name": "Bone less chicken",
+  "summery": "Chicken breast (fresh)",
+  "price": 25,
+  "farm": "",
+  "description": "best quality chicken.",
+  "image": ["img1", "img2"],
+  "weight": "250gm",
+  "amount": 2,
+  "available": true
+}

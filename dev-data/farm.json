@@ -1,0 +1,61 @@
+[
+  {
+    "name":"The Web3.0 Farm",
+    "_id": "5c88fa8cf4afda39709c2955",
+    "ratingsAverage": 4.3,
+    "ratingsQuantity": 32,
+    "summery": "The best highquality meat & veggies poduced here",
+    "location": {
+      "description": "Miami, USA",
+      "type": "Point",
+      "coordinates": [-80.185942, 25.774772],
+      "address": "301 Biscayne Blvd, Miami, FL 33132, USA"
+    },
+    "description":"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "imageCover": "tour-2-cover.jpg",
+    "images": ["tour-2-1.jpg", "tour-2-2.jpg", "tour-2-3.jpg"],
+    "secretFarm": false,
+    "meat": true,
+    "produce": true
+  },
+  {
+    "name":"The John Doe Farm",
+    "_id": "5c88fa8cf4afda39709c295a",
+    "ratingsAverage": 4.1,
+    "ratingsQuantity": 22,
+    "summery": "veggies poduced here",
+    "location": {
+      "description": "Banff, CAN",
+      "type": "Point",
+      "coordinates": [-115.570154, 51.178456],
+      "address": "224 Banff Ave, Banff, AB, Canada"
+    },
+    "description":"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "imageCover": "tour-3-cover.jpg",
+    "images": ["tour-21-1.jpg", "tour-12-2.jpg", "tour-21-3.jpg"],
+    "secretFarm": false,
+    "meat": false,
+    "meatDetails": [],
+    "produce": true
+  },
+  {
+    "name":"The RBN Farm",
+    "_id": "5c88fa8cf4afda39709c295d",
+    "ratingsAverage": 4.3,
+    "ratingsQuantity": 32,
+    "summery": "The best highquality meat here",
+    "location": {
+      "description": "Miami, USA",
+      "type": "Point",
+      "coordinates": [-80.185942, 25.774772],
+      "address": "301 Biscayne Blvd, Miami, FL 33132, USA"
+    },
+    "description":"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "imageCover": "tour-2-cover.jpg",
+    "images": ["tour-2-1.jpg", "tour-2-2.jpg", "tour-2-3.jpg"],
+    "secretFarm": false,
+    "meat": true,
+    "produce": false
+  }
+
+]
