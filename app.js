@@ -8,6 +8,7 @@ const mongoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 
 const farmRouter = require('./routes/farmRoutes')
 const userRouter = require('./routes/userRoutes')
@@ -20,6 +21,8 @@ const buscketRouter = require('./routes/buscketRoutes')
 const productRouter = require('./routes/productRoute')
 const productReviewRouter = require('./routes/reviewProductRoute')
 const app = express()
+
+app.use(cors())
 
 app.use(express.json())
 
