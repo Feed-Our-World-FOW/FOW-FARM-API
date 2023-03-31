@@ -20,6 +20,7 @@ const produceRouter = require('./routes/produceRoutes')
 const buscketRouter = require('./routes/buscketRoutes')
 const productRouter = require('./routes/productRoute')
 const productReviewRouter = require('./routes/reviewProductRoute')
+const addressRouter = require('./routes/addressRoutes')
 const app = express()
 
 app.use(cors())
@@ -74,6 +75,7 @@ app.use('/api/v1/addProduce', produceRouter)
 app.use('/api/v1/buscket', buscketRouter)
 app.use('/api/v1/addProduct', productRouter)
 app.use('/api/v1/reviewProduct', productReviewRouter)
+app.use('/api/v1/address', addressRouter)
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
