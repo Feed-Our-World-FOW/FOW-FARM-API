@@ -6,7 +6,9 @@ const {
   getSingleAddress,
   updateAddress,
   deleteAddress,
-  setUserUserId
+  setUserUserId,
+  getMyAddress,
+  updateMyAddress
 } = require('../controllers/addressControllers')
 
 const {
@@ -17,6 +19,9 @@ const {
 const router = express.Router()
 
 router.use(protect)
+
+router.route('/myAddress').get(getMyAddress)
+router.route('/myAddress').patch(updateMyAddress)
 
 router
   .route('/')

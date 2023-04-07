@@ -9,7 +9,9 @@ const {
   aliasTopFarm,
   getFarmStats,
   getFarmWithin,
-  getDistances
+  getDistances,
+  uploadFarmImages,
+  resizeFarmImages
 } = require('../controllers/farmControllers')
 
 
@@ -19,15 +21,15 @@ const {
 } = require('../controllers/authControllers')
 
 const reviewRouter = require('./reviewRoutes')
-const meatRouter = require('./meatRoutes')
-const produceRouter = require('./produceRoutes')
+// const meatRouter = require('./meatRoutes')
+// const produceRouter = require('./produceRoutes')
 const productRouter = require('./productRoute')
 
 const router = express.Router()
 
 router.use('/:farmId/reviews', reviewRouter)
-router.use('/:farmId/addMeat', meatRouter)
-router.use('/:farmId/addProduce', produceRouter)
+// router.use('/:farmId/addMeat', meatRouter)
+// router.use('/:farmId/addProduce', produceRouter)
 router.use('/:farmId/addProduct', productRouter)
 
 router.route('/top-5').get(aliasTopFarm, getAllFarm)
@@ -46,7 +48,7 @@ router
 router
   .route('/:id')
     .get(getSingleFarm)
-    .patch(protect, restrictTo('admin', 'business'), updateFarm)
+    .patch(uploadFarmImages,resizeFarmImages, protect, restrictTo('admin', 'business'), updateFarm)
     .delete(protect, restrictTo('admin', 'business'), deleteFarm)
 
 

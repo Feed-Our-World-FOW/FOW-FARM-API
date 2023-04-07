@@ -6,7 +6,9 @@ const {
   getProduct,
   updateProduct,
   deleteProduct,
-  setFarmUserIds
+  setFarmUserIds,
+  uploadProductImages,
+  resizeProductImages
 } = require('../controllers/productControllers')
 
 const {
@@ -25,12 +27,12 @@ router.use(protect)
 router
   .route('/')
     .get(getAllProducts)
-    .post(restrictTo('business'), setFarmUserIds, createProduct)
+    .post(uploadProductImages, resizeProductImages, restrictTo('business', 'admin'), setFarmUserIds, createProduct)
 
 router
   .route('/:id')
     .delete(restrictTo('business', 'admin'), deleteProduct)
     .get(getProduct)
-    .patch(restrictTo('business', 'admin'), updateProduct)
+    .patch(uploadProductImages, resizeProductImages, restrictTo('business', 'admin'), updateProduct)
 
 module.exports = router

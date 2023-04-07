@@ -8,7 +8,9 @@ const {
   deleteUser,
   updateMe,
   deleteMe,
-  getMe
+  getMe,
+  uploadUserPhoto,
+  resizeUserPhoto
 } = require('../controllers/userControllers')
 
 const {
@@ -21,6 +23,7 @@ const {
   updatePassword,
   restrictTo
 } = require('../controllers/authControllers')
+
 
 const router = express.Router()
 
@@ -56,7 +59,7 @@ router
 
 router
   .route('/updateMe')
-    .patch(updateMe)
+    .patch(uploadUserPhoto, resizeUserPhoto, updateMe)
 
 router
   .route('/deleteMe')

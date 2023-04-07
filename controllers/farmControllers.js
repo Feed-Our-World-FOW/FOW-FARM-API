@@ -2,6 +2,51 @@ const Farm = require('../model/farmModel')
 const catchAsync = require('../utils/catchAsync')
 const factory = require('./handleFactory')
 const AppError = require('../utils/appError')
+const multer = require('multer')
+const sharp = require('sharp')
+
+
+const multerStorage = multer.memoryStorage()
+
+const multerFilter = (req, file, cb) => {
+  if(file.mimetype.startsWith('image')) {
+    cb(null, true)
+  } else {
+    cb(new AppError(`Not an Image! Please upload only images`, 404), false)
+  }
+}
+
+const upload = multer({ 
+  storage: multerStorage,
+  fileFilter: multerFilter
+})
+
+exports.uploadFarmImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 1 }
+])
+
+exports.resizeFarmImages = catchAsync( async(req, res, next) => {
+  if(!req.files.imageCover || !req.files.images) return next()
+
+  const coverImage = `farm-${req.params.id}-${Date.now()}-cover.jpeg`
+  req.body.imageCover = coverImage
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/farms/${coverImage}`)
+
+  const image = `farm-${req.params.id}-${Date.now()}-image.jpeg`
+  req.body.images = image
+  await sharp(req.files.images[0].buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/farms/${image}`)
+  
+  next()
+})
 
 exports.aliasTopFarm = (req, res, next) => {
   req.query.limit = '5'
@@ -11,7 +56,8 @@ exports.aliasTopFarm = (req, res, next) => {
 }
 
 exports.getAllFarm = factory.getAll(Farm)
-exports.getSingleFarm = factory.getOne(Farm, { path: 'reviews allMeats allProduce allProduct' })
+// exports.getSingleFarm = factory.getOne(Farm, { path: 'reviews allMeats allProduce allProduct' })
+exports.getSingleFarm = factory.getOne(Farm, { path: 'reviews allProduct' })
 exports.createFarm = factory.createOne(Farm)
 exports.updateFarm = factory.updateOne(Farm)
 exports.deleteFarm = factory.deleteOne(Farm)

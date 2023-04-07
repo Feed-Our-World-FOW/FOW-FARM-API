@@ -48,10 +48,9 @@ const farmSchema = new mongoose.Schema({
     required: [true, 'A farm must have a description']
   },
   imageCover: {
-    type: String,
-    required: [true, 'A farm must have a cover image']
+    type: String
   },
-  images: [String],
+  images: String,
   secretFarm: {
     type: Boolean,
     default: false

@@ -1,11 +1,15 @@
 const mongoose = require('mongoose')
 const Farm = require('./farmModel')
-const Meat = require('./meatModel')
-const Produce = require('./produceModel')
+// const Meat = require('./meatModel')
+// const Produce = require('./produceModel')
 const Product = require('./productModel')
 
 const reviewSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: [true, 'Review can not be empty!']
+    },
     review: {
       type: String,
       required: [true, 'Review can not be empty!']
@@ -88,67 +92,67 @@ reviewSchema.statics.calcAverageRating = async function(farmId) {
 }
 
 // Calculate the average rating of a farm by reviews
-reviewSchema.statics.calcAverageRatingOfMeat = async function(meatId) {
+// reviewSchema.statics.calcAverageRatingOfMeat = async function(meatId) {
 
-  // Calculate the statistics of number of rating and average
-  const stats = await this.aggregate([
-    {
-      $match: { meat: meatId }
-    },
-    {
-      $group: {
-        _id: '$meat',
-        nRating: { $sum: 1 },
-        avgRating: { $avg: '$rating' }
-      }
-    }
-  ])
+//   // Calculate the statistics of number of rating and average
+//   const stats = await this.aggregate([
+//     {
+//       $match: { meat: meatId }
+//     },
+//     {
+//       $group: {
+//         _id: '$meat',
+//         nRating: { $sum: 1 },
+//         avgRating: { $avg: '$rating' }
+//       }
+//     }
+//   ])
 
-  // Set the farm's number of rating and rating average
-  if(stats.length > 0) {
-    await Meat.findByIdAndUpdate(meatId, {
-      ratingsQuantity: stats[0].nRating,
-      ratingsAverage: stats[0].avgRating
-    })
-  }else {
-    await Meat.findByIdAndUpdate(meatId, {
-      ratingsQuantity: 0,
-      ratingsAverage: 4.5
-    })
-  }
-}
+//   // Set the farm's number of rating and rating average
+//   if(stats.length > 0) {
+//     await Meat.findByIdAndUpdate(meatId, {
+//       ratingsQuantity: stats[0].nRating,
+//       ratingsAverage: stats[0].avgRating
+//     })
+//   }else {
+//     await Meat.findByIdAndUpdate(meatId, {
+//       ratingsQuantity: 0,
+//       ratingsAverage: 4.5
+//     })
+//   }
+// }
 
 
 // Calculate the average rating of a farm by reviews
-reviewSchema.statics.calcAverageRatingOfProduce = async function(produceId) {
+// reviewSchema.statics.calcAverageRatingOfProduce = async function(produceId) {
 
-  // Calculate the statistics of number of rating and average
-  const stats = await this.aggregate([
-    {
-      $match: { produce: produceId }
-    },
-    {
-      $group: {
-        _id: '$produce',
-        nRating: { $sum: 1 },
-        avgRating: { $avg: '$rating' }
-      }
-    }
-  ])
+//   // Calculate the statistics of number of rating and average
+//   const stats = await this.aggregate([
+//     {
+//       $match: { produce: produceId }
+//     },
+//     {
+//       $group: {
+//         _id: '$produce',
+//         nRating: { $sum: 1 },
+//         avgRating: { $avg: '$rating' }
+//       }
+//     }
+//   ])
 
-  // Set the farm's number of rating and rating average
-  if(stats.length > 0) {
-    await Produce.findByIdAndUpdate(produceId, {
-      ratingsQuantity: stats[0].nRating,
-      ratingsAverage: stats[0].avgRating
-    })
-  }else {
-    await Produce.findByIdAndUpdate(produceId, {
-      ratingsQuantity: 0,
-      ratingsAverage: 4.5
-    })
-  }
-}
+//   // Set the farm's number of rating and rating average
+//   if(stats.length > 0) {
+//     await Produce.findByIdAndUpdate(produceId, {
+//       ratingsQuantity: stats[0].nRating,
+//       ratingsAverage: stats[0].avgRating
+//     })
+//   }else {
+//     await Produce.findByIdAndUpdate(produceId, {
+//       ratingsQuantity: 0,
+//       ratingsAverage: 4.5
+//     })
+//   }
+// }
 
 
 // Calculate the average rating of a farm by reviews
@@ -188,8 +192,8 @@ reviewSchema.statics.calcAverageRatingOfProduct = async function(productId) {
 reviewSchema.post('save', function() {
   this.constructor.calcAverageRating(this.farm)
 
-  this.constructor.calcAverageRatingOfMeat(this.meat)
-  this.constructor.calcAverageRatingOfProduce(this.produce)
+  // this.constructor.calcAverageRatingOfMeat(this.meat)
+  // this.constructor.calcAverageRatingOfProduce(this.produce)
   this.constructor.calcAverageRatingOfProduct(this.product)
 })
 
@@ -202,8 +206,8 @@ reviewSchema.pre(/^findOneAnd/, async function(next) {
 reviewSchema.post(/^findOneAnd/, async function() {
   await this.r.constructor.calcAverageRating(this.r.farm)
 
-  await this.r.constructor.calcAverageRatingOfMeat(this.r.meat)
-  await this.r.constructor.calcAverageRatingOfProduce(this.r.produce)
+  // await this.r.constructor.calcAverageRatingOfMeat(this.r.meat)
+  // await this.r.constructor.calcAverageRatingOfProduce(this.r.produce)
   await this.r.constructor.calcAverageRatingOfProduct(this.r.product)
 })
 // -------------------
