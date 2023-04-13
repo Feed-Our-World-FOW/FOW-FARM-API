@@ -29,6 +29,8 @@ exports.uploadFarmImages = upload.fields([
 exports.resizeFarmImages = catchAsync( async(req, res, next) => {
   if(!req.files.imageCover || !req.files.images) return next()
 
+  // console.log(req.files)
+
   const coverImage = `farm-${req.params.id}-${Date.now()}-cover.jpeg`
   req.body.imageCover = coverImage
   await sharp(req.files.imageCover[0].buffer)
@@ -58,9 +60,46 @@ exports.aliasTopFarm = (req, res, next) => {
 exports.getAllFarm = factory.getAll(Farm)
 // exports.getSingleFarm = factory.getOne(Farm, { path: 'reviews allMeats allProduce allProduct' })
 exports.getSingleFarm = factory.getOne(Farm, { path: 'reviews allProduct' })
-exports.createFarm = factory.createOne(Farm)
 exports.updateFarm = factory.updateOne(Farm)
 exports.deleteFarm = factory.deleteOne(Farm)
+
+exports.createFarm = catchAsync(async (req, res, next) => {
+  const doc = await Farm.create({ ...req.body, owner: req.user.id });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: doc
+    }
+  });
+});
+
+
+exports.updateFarm = catchAsync(async (req, res, next) => {
+
+  const doc = await Farm.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  if (!doc) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  const farm = await Farm.findById(req.params.id)
+
+  if(JSON.stringify(req.user.id) !== JSON.stringify(farm.owner)) 
+  return next(new AppError(`You don't have permission to edit these Farm properties`, 400))
+
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: doc
+    }
+  });
+});
+
 
 
 exports.getFarmStats = catchAsync(async (req, res) => {

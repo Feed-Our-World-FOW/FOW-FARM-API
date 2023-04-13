@@ -5,7 +5,7 @@ const buySchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      // required: [true, "buscket must contain some user"]
+      // required: [true, "cart must contain some user"]
     },
     items: [
       {

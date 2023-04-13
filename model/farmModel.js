@@ -11,6 +11,13 @@ const farmSchema = new mongoose.Schema({
     minlength: [10, 'A farm must have greater then or equal then 10 characters']
   },
   slug: String,
+  walletAddress: {
+    type: String,
+    unique: true
+  },
+  paymentCard: {
+    type: String
+  },
   ratingsAverage: {
     type: Number,
     default: 4.5,
@@ -27,11 +34,11 @@ const farmSchema = new mongoose.Schema({
     trim: true,
     required: [true, 'A farm must have a summery']
   },
-  // owner: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: 'User',
-  //   required: [true, 'Farm must belongs to a business account']
-  // },
+  owner: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'Farm must belongs to a user']
+  },
   location: {
     type: {
       type: String,
@@ -46,6 +53,10 @@ const farmSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: [true, 'A farm must have a description']
+  },
+  minimumOrder: {
+    type: Number,
+    required: [true, 'Farm must have a minimum order']
   },
   imageCover: {
     type: String

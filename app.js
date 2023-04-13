@@ -13,7 +13,7 @@ const cors = require('cors')
 const farmRouter = require('./routes/farmRoutes')
 const userRouter = require('./routes/userRoutes')
 const reviewRouter = require('./routes/reviewRoutes')
-const buscketRouter = require('./routes/buscketRoutes')
+const cartRouter = require('./routes/cartRoutes')
 const productRouter = require('./routes/productRoute')
 const productReviewRouter = require('./routes/reviewProductRoute')
 const addressRouter = require('./routes/addressRoutes')
@@ -66,7 +66,7 @@ app.use('/public', express.static('public'))
 app.use('/api/v1/farm', farmRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
-app.use('/api/v1/buscket', buscketRouter)
+app.use('/api/v1/cart', cartRouter)
 app.use('/api/v1/addProduct', productRouter)
 app.use('/api/v1/reviewProduct', productReviewRouter)
 app.use('/api/v1/address', addressRouter)
@@ -79,3 +79,4 @@ app.use(globalErrorHandler)
 
 module.exports = app
 
+// 26

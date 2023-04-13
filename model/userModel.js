@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'please provide a valid email']
   },
   photo: String,
+  address: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Address'
+  },
   role: {
     type: String,
     enum: ['user', 'business', 'admin'],
@@ -46,6 +50,15 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false
   }
+})
+
+userSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'address',
+    select: 'country mobileNumber pincode town'
+  })
+
+  next()
 })
 
 userSchema.pre('save', async function(next) {
