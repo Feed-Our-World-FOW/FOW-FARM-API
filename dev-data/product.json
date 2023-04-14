@@ -1,11 +1,10 @@
 {
-  "name": "Bone less chicken",
-  "summery": "Chicken breast (fresh)",
+  "name": "Boneless Farm Chicken",
+  "summary": "Introducing Boneless Farm Chicken, the delicious and convenient poultry product from our farm. Enjoy tender and juicy chicken without any bones!",
   "price": 25,
-  "farm": "",
-  "description": "best quality chicken.",
-  "image": ["img1", "img2"],
+  "description": "Boneless Farm Chicken is a high-quality and healthier option for those who want to enjoy tender and juicy chicken without bones. Sourced directly from our farm, our product is easy to prepare and versatile enough to use in a variety of dishes. Whether you're grilling, roasting, or stir-frying, our chicken will be a tasty addition to your meals. With Boneless Farm Chicken, you can enjoy the convenience of boneless chicken without sacrificing flavor or quality.",
+  "image": [],
   "weight": "250gm",
-  "amount": 2,
+  "amount": 6,
   "available": true
 }

@@ -15,9 +15,11 @@ const farmSchema = new mongoose.Schema({
     type: String,
     unique: true
   },
-  paymentCard: {
-    type: String
-  },
+  paymentOptions: [{
+    type: String,
+    enum: ['cash', 'crypto', 'card', 'UPI'],
+    required: [true, 'A farm must have a payment option']
+  }],
   ratingsAverage: {
     type: Number,
     default: 4.5,
@@ -29,10 +31,11 @@ const farmSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  "summery": {
+  summary: {
     type: String,
     trim: true,
-    required: [true, 'A farm must have a summery']
+    required: [true, 'A farm must have a summary'],
+    maxlength: [200, 'Summary must contains less then or equal to 200 characters']
   },
   owner: {
     type: mongoose.Schema.ObjectId,
@@ -52,7 +55,8 @@ const farmSchema = new mongoose.Schema({
   description: {
     type: String,
     trim: true,
-    required: [true, 'A farm must have a description']
+    required: [true, 'A farm must have a description'],
+    maxlength: [500, 'Description must contains less then or equal to 500 characters']
   },
   minimumOrder: {
     type: Number,
@@ -61,7 +65,7 @@ const farmSchema = new mongoose.Schema({
   imageCover: {
     type: String
   },
-  images: String,
+  image: String,
   secretFarm: {
     type: Boolean,
     default: false
@@ -99,6 +103,15 @@ farmSchema.pre(/^find/, function(next) {
   next()
 })
 
+farmSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'owner',
+    select: 'name photo email'
+  })
+
+  next()
+})
+
 // Not going to polute the getAllFarm screen------
 // farmSchema.pre(/^find/, function(next) {
 //   this.populate({
@@ -121,17 +134,17 @@ farmSchema.virtual('reviews', {
   localField: '_id'
 })
 
-farmSchema.virtual('allMeats', {
-  ref: 'Meat',
-  foreignField: 'farm',
-  localField: '_id'
-})
+// farmSchema.virtual('allMeats', {
+//   ref: 'Meat',
+//   foreignField: 'farm',
+//   localField: '_id'
+// })
 
-farmSchema.virtual('allProduce', {
-  ref: 'Produce',
-  foreignField: 'farm',
-  localField: '_id'
-})
+// farmSchema.virtual('allProduce', {
+//   ref: 'Produce',
+//   foreignField: 'farm',
+//   localField: '_id'
+// })
 
 farmSchema.virtual('allProduct', {
   ref: 'Product',

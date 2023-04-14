@@ -1,19 +1,18 @@
 [
   {
-    "name":"The Web3.0 Farm",
-    "_id": "5c88fa8cf4afda39709c2955",
-    "ratingsAverage": 4.3,
-    "ratingsQuantity": 32,
-    "summery": "The best highquality meat & veggies poduced here",
+    "name":"Sunnybrook Farm",
+    "walletAddress": "0x93046Cab079d9c8241c01bF20D72b102dADce92C",
+    "summary": "Sunnybrook Farm is a picturesque property with vast pastures, a cozy farmhouse, and a diverse range of livestock such as chickens, and an extensive vegetable garden.",
     "location": {
       "description": "Miami, USA",
       "type": "Point",
       "coordinates": [-80.185942, 25.774772],
       "address": "301 Biscayne Blvd, Miami, FL 33132, USA"
     },
-    "description":"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "imageCover": "tour-2-cover.jpg",
-    "images": ["tour-2-1.jpg", "tour-2-2.jpg", "tour-2-3.jpg"],
+    "description":"Sunnybrook Farm is a charming rural property with sprawling pastures, a quaint farmhouse, and a variety of livestock. The farm is home to chickens, well-cared-for cows for dairy products, and sustainably-raised pigs for high-quality pork. The farm's extensive vegetable garden produces a bountiful harvest of fresh produce, used to feed the farm's inhabitants and sold at the local farmers market. It's a beautiful and sustainable property that celebrates the simplicity and beauty of rural life.",
+    "minimumOrder": 35,
+    "imageCover": "",
+    "images": "",
     "secretFarm": false,
     "meat": true,
     "produce": true
@@ -23,7 +22,7 @@
     "_id": "5c88fa8cf4afda39709c295a",
     "ratingsAverage": 4.1,
     "ratingsQuantity": 22,
-    "summery": "veggies poduced here",
+    "summary": "veggies poduced here",
     "location": {
       "description": "Banff, CAN",
       "type": "Point",
@@ -43,7 +42,7 @@
     "_id": "5c88fa8cf4afda39709c295d",
     "ratingsAverage": 4.3,
     "ratingsQuantity": 32,
-    "summery": "The best highquality meat here",
+    "summary": "The best highquality meat here",
     "location": {
       "description": "Miami, USA",
       "type": "Point",

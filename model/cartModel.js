@@ -58,7 +58,7 @@ cartSchema.pre(/^find/, function(next) {
 cartSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'items.product',
-    select: 'name image summery price weight amount farm'
+    select: 'name image summary price weight amount farm'
   })
   next()
 })

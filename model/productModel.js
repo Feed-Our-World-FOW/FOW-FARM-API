@@ -8,10 +8,11 @@ const productSchema = new mongoose.Schema(
       lowercase: true,
       required: [true, 'must have a product name']
     },
-    summery: {
+    summary: {
       type: String,
       trim: true,
-      required: [true, 'must have a product summery']
+      required: [true, 'must have a product summary'],
+      maxlength: [200, 'Summary must contains less then or equal to 200 characters']
     },
     price: {
       type: Number,
@@ -26,9 +27,15 @@ const productSchema = new mongoose.Schema(
       ref: 'Farm',
       required: [true, 'must belongs to a farm']
     },
+    owner: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: [true, 'must belongs to a owner']
+    },
     description: {
       type: String,
-      required: [true, 'must have product description']
+      required: [true, 'must have product description'],
+      maxlength: [500, 'Description must contains less then or equal to 500 characters']
     },
     image: {
       type: [String]
@@ -71,6 +78,22 @@ productSchema.index({ ratingsAverage: -1 })
 //   })
 //   next()
 // })
+
+productSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'owner',
+    select: 'name photo email'
+  })
+  next()
+})
+
+productSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'farm',
+    select: 'name'
+  })
+  next()
+})
 
 productSchema.virtual('productReviews', {
   ref: 'ReviewProduct',

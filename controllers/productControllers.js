@@ -51,8 +51,19 @@ exports.setFarmUserIds = (req, res, next) => {
   next();
 };
 
-exports.createProduct = factory.createOne(Product)
+// exports.createProduct = factory.createOne(Product)
 exports.getAllProducts = factory.getAll(Product)
 exports.getProduct = factory.getOne(Product, { path: 'productReviews' })
 exports.updateProduct = factory.updateOne(Product)
 exports.deleteProduct = factory.deleteOne(Product)
+
+exports.createProduct = catchAsync(async (req, res, next) => {
+  const doc = await Product.create({ ...req.body, owner: req.user.id })
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: doc
+    }
+  })
+})

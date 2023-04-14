@@ -10,9 +10,28 @@ exports.setUserUserId = (req, res, next) => {
 
 exports.getAllAddress = factory.getAll(Address)
 exports.getSingleAddress = factory.getOne(Address)
-exports.createAddress = factory.createOne(Address)
+// exports.createAddress = factory.createOne(Address)
 exports.updateAddress = factory.updateOne(Address)
 exports.deleteAddress = factory.deleteOne(Address)
+
+
+exports.createAddress = catchAsync(async (req, res, next) => {
+  let myAddress = await Address.find({ user: req.user.id })
+
+  if(myAddress.length > 0) {
+    return next(new AppError(`You already have an address, please delete the existing one before create a new one`, 400))
+  }
+
+  const doc = await Address.create(req.body);
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: doc
+    }
+  });
+});
+
 
 exports.getMyAddress = catchAsync(async (req, res, next) => {
   let query = Address.find({ user: req.user.id })

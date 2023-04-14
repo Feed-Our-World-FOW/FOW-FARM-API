@@ -16,10 +16,6 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'please provide a valid email']
   },
   photo: String,
-  address: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Address'
-  },
   role: {
     type: String,
     enum: ['user', 'business', 'admin'],
@@ -49,17 +45,26 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
-  }
-})
+  },
+  // addressId: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: 'Address'
+  // },
+  // farmId: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: 'Farm'
+  // },
+  // productId: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: 'User'
+  // }
+},
+{
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+}
+)
 
-userSchema.pre(/^find/, function(next) {
-  this.populate({
-    path: 'address',
-    select: 'country mobileNumber pincode town'
-  })
-
-  next()
-})
 
 userSchema.pre('save', async function(next) {
   if(!this.isModified('password') || this.isNew) return next()
@@ -117,6 +122,28 @@ userSchema.methods.createPasswordResetToken = function() {
 
   return resetToken
 }
+
+// userSchema.pre(/^find/, function(next) {
+//   this.populate({
+//     path: 'address',
+//     select: 'country'
+//   })
+//   next()
+// })
+
+userSchema.virtual('myAddress', {
+  ref: 'Address',
+  foreignField: 'user',
+  localField: '_id'
+})
+
+userSchema.virtual('myFarm', {
+  ref: 'Farm',
+  foreignField: 'owner',
+  localField: '_id',
+  options: { select: 'name' }
+})
+
 
 const User = mongoose.model('User', userSchema)
 

@@ -99,7 +99,7 @@ exports.createUser = (req, res) => {
   })
 }
 
-exports.getSingleUser = factory.getOne(User);
+exports.getSingleUser = factory.getOne(User, { path: 'myAddress myFarm' });
 exports.getAllUser = factory.getAll(User);
 
 // Do NOT update passwords with this!
