@@ -27,7 +27,7 @@ exports.uploadFarmImages = upload.fields([
 ])
 
 exports.resizeFarmImages = catchAsync( async(req, res, next) => {
-  if(!req.files.imageCover || !req.files.images) return next()
+  if(!req?.files?.imageCover || !req.files.images) return next()
 
   // console.log(req.files)
 
@@ -88,7 +88,10 @@ exports.updateFarm = catchAsync(async (req, res, next) => {
 
   const farm = await Farm.findById(req.params.id)
 
-  if(JSON.stringify(req.user.id) !== JSON.stringify(farm.owner)) 
+  // console.log(JSON.stringify(req.user.id))
+  // console.log(JSON.stringify(farm.owner))
+
+  if(JSON.stringify(req.user.id) !== JSON.stringify(farm.owner._id)) 
   return next(new AppError(`You don't have permission to edit these Farm properties`, 400))
 
 

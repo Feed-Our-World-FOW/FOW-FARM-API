@@ -43,7 +43,7 @@ exports.addToCart = catchAsync(async (req, res, next) => {
 
   if(cart) {
     for(let i = 0; i < cart.items.length; i++) {
-      if(JSON.stringify(farm._id) !== JSON.stringify(cart.items[i].product.farm)) {
+      if(JSON.stringify(farm._id) !== JSON.stringify(cart.items[i].product.farm._id)) {
         
         return next(new AppError(`You can only add items from a single farm`, 400))
       }

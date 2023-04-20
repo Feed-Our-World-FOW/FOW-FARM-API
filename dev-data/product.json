@@ -1,4 +1,4 @@
-{
+[{
   "name": "Boneless Farm Chicken",
   "summary": "Introducing Boneless Farm Chicken, the delicious and convenient poultry product from our farm. Enjoy tender and juicy chicken without any bones!",
   "price": 25,
@@ -7,4 +7,65 @@
   "weight": "250gm",
   "amount": 6,
   "available": true
+},
+{
+  "name": "Golden Cashew Crunch",
+  "summary": "Golden Cashew Crunch is a premium snack made from carefully selected and roasted cashews. Delicious, healthy, and perfect for any occasion.",
+  "price": 2,
+  "description": "Golden Cashew Crunch is a premium snack made from carefully selected and roasted cashews. The cashews are sourced from the highest quality producers to ensure that each bite is packed with flavor and nutrition.",
+  "image": [],
+  "weight": "250gm",
+  "amount": 1,
+  "available": true
+},
+{
+  "name": "Wild Goat Grillers",
+  "summary": "Wild Goat Grillers is a premium goat meat product from Wild Game Ranch Farm, offering delicious and lean meat for your grilling needs.",
+  "price": 2,
+  "description": "Wild Goat Grillers is a premium goat meat product from Wild Game Ranch Farm, a family-owned and operated ranch that specializes in wild game meats. The goats are raised on the ranch and allowed to graze on the natural grasses, resulting in a lean and flavorful meat that is perfect for grilling.",
+  "image": [],
+  "weight": "500gm",
+  "amount": 3,
+  "available": true
+},
+{
+  "name": "Berry Burst Bliss",
+  "summary": "Berry Burst Bliss is a premium blend of fresh and juicy berries that make for a delicious and healthy snack or ingredient for recipes.",
+  "price": 8,
+  "description": "Berry Burst Bliss is a premium blend of fresh and juicy berries, carefully selected and packaged for your enjoyment. Our blend includes a mix of strawberries, blueberries, raspberries, and blackberries, providing a variety of flavors and nutrients in each bite.",
+  "image": [],
+  "weight": "200gm",
+  "amount": 1,
+  "available": true
+},
+{
+  "name": "Golden Harvest Potatoes",
+  "summary": "Golden Harvest Potatoes are a premium variety of potatoes with a rich golden skin and a creamy texture that is perfect for roasting, baking, or mashing.",
+  "price": 10,
+  "description": "Golden Harvest Potatoes are a premium variety of potatoes that are known for their distinct golden skin and creamy texture. They are carefully grown and harvested to ensure the highest quality and flavor.",
+  "image": [],
+  "weight": "500 gm",
+  "amount": 10,
+  "available": true
+},
+{
+  "name": "Herb-Roasted Chicken Breasts",
+  "summary": "Herbivore Farms' Herb-Roasted Chicken Breasts are a premium and flavorful chicken breast product, roasted with a blend of savory herbs for a delicious and healthy meal option.",
+  "price": 15,
+  "description": "Herbivore Farms' Herb-Roasted Chicken Breasts are a premium and flavorful chicken breast product that is perfect for those looking for a healthy and delicious meal option. Our chicken breasts are carefully selected and roasted with a blend of savory herbs, ",
+  "image": [],
+  "weight": "500 gm",
+  "amount": 5,
+  "available": true
+},
+{
+  "name": "Sweet & Tangy Vidalia Onions",
+  "summary": "HSweet & Tangy Vidalia Onions are a premium variety of onions, grown in the fertile soil of Georgia, USA, with a unique combination of sweetness and tanginess",
+  "price": 10,
+  "description": "Sweet & Tangy Vidalia Onions are a premium variety of onions that are grown in the fertile soil of Georgia, USA. They are known for their unique combination of sweetness and tanginess, making them perfect for adding flavor to salads, sandwiches, and roasting.",
+  "image": [],
+  "weight": "500 gm",
+  "amount": 8,
+  "available": true
 }
+]

@@ -80,7 +80,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   }else if(req.cookies.jwt) {
     token = req.cookies.jwt
   }
-
   if(!token) {
     return next(new AppError(`You aren't logged in! Please log in to get access`, 401))
   }
@@ -98,8 +97,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   req.user = freshUser
-
-  // console.log(token)
 
   next()
 })

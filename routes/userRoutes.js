@@ -50,12 +50,13 @@ router
 router.use(protect)
 
 router
+  .route('/me')
+    .get(getMe, getSingleUser)
+
+router
   .route('/updateMyPassword')
     .patch(updatePassword)
 
-router
-  .route('/me')
-    .get(getMe, getSingleUser)
 
 router
   .route('/updateMe')

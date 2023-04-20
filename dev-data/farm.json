@@ -6,7 +6,7 @@
     "location": {
       "description": "Miami, USA",
       "type": "Point",
-      "coordinates": [-80.185942, 25.774772],
+      "coordinates": [-94.91423477071142, 29.392038343680813],
       "address": "301 Biscayne Blvd, Miami, FL 33132, USA"
     },
     "description":"Sunnybrook Farm is a charming rural property with sprawling pastures, a quaint farmhouse, and a variety of livestock. The farm is home to chickens, well-cared-for cows for dairy products, and sustainably-raised pigs for high-quality pork. The farm's extensive vegetable garden produces a bountiful harvest of fresh produce, used to feed the farm's inhabitants and sold at the local farmers market. It's a beautiful and sustainable property that celebrates the simplicity and beauty of rural life.",
@@ -18,43 +18,76 @@
     "produce": true
   },
   {
-    "name":"The John Doe Farm",
-    "_id": "5c88fa8cf4afda39709c295a",
-    "ratingsAverage": 4.1,
-    "ratingsQuantity": 22,
-    "summary": "veggies poduced here",
+    "name":"Wild Game Ranch Farm",
+    "walletAddress": "0x93046Cab079d9c8241c01bF20D72b102dADce93C",
+    "summary": "Wild Game Ranch is a farm that specializes in selling various types of meat, excluding beef. It offers a variety of wild game meats for customers to choose from.",
     "location": {
-      "description": "Banff, CAN",
+      "description": "Texus, USA",
       "type": "Point",
-      "coordinates": [-115.570154, 51.178456],
-      "address": "224 Banff Ave, Banff, AB, Canada"
+      "coordinates": [-95.61513099356159, 29.735681219765624],
+      "address": "12971 Westheimer Rd, Houston, TX 77077, United States"
     },
-    "description":"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "imageCover": "tour-3-cover.jpg",
-    "images": ["tour-21-1.jpg", "tour-12-2.jpg", "tour-21-3.jpg"],
-    "secretFarm": false,
-    "meat": false,
-    "meatDetails": [],
-    "produce": true
-  },
-  {
-    "name":"The RBN Farm",
-    "_id": "5c88fa8cf4afda39709c295d",
-    "ratingsAverage": 4.3,
-    "ratingsQuantity": 32,
-    "summary": "The best highquality meat here",
-    "location": {
-      "description": "Miami, USA",
-      "type": "Point",
-      "coordinates": [-80.185942, 25.774772],
-      "address": "301 Biscayne Blvd, Miami, FL 33132, USA"
-    },
-    "description":"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "imageCover": "tour-2-cover.jpg",
-    "images": ["tour-2-1.jpg", "tour-2-2.jpg", "tour-2-3.jpg"],
+    "description":"Wild Game Ranch is a farm that specializes in selling a variety of meats, excluding beef. Their selection of wild game meats includes venison, elk, bison, wild boar, and rabbit, offering customers a unique and flavorful alternative to traditional meats. The farm operates with a focus on sustainability and animal welfare, ensuring that their animals are raised in natural environments with plenty of space to move and forage.",
+    "minimumOrder": 25,
+    "imageCover": "",
+    "images": "",
     "secretFarm": false,
     "meat": true,
     "produce": false
+  },
+  {
+    "name":"Harvest Fields Farm",
+    "walletAddress": "0x93046Cab079d9c8241c01bF20D72b102dADce94C",
+    "summary": "Harvest Fields Farm is a farm that specializes in producing fresh, high-quality produce. They sell their products directly to customers, offering a wide range of seasonal fruits and vegetables",
+    "location": {
+      "description": "2364 S Dairy Ashford Rd",
+      "type": "Point",
+      "coordinates": [ -95.60694917441937, 29.73875172378886],
+      "address": "2364 S Dairy Ashford Rd"
+    },
+    "description":"Harvest Fields Farm is a family-owned farm that specializes in producing fresh and high-quality produce. They cultivate their fruits and vegetables with care, using sustainable and eco-friendly farming practices that prioritize the health of the soil, crops, and surrounding environment. The farm offers a wide range of seasonal produce that changes throughout the year, ensuring that customers always have access to the freshest and most flavorful products.",
+    "minimumOrder": 15,
+    "imageCover": "",
+    "images": "",
+    "secretFarm": false,
+    "meat": true,
+    "produce": true
+  },
+  {
+    "name":"Green Pastures Ranch and Farm",
+    "walletAddress": "0x93046Cab079d9c8241c01bF20D72b102dADce95C",
+    "summary": "Green Pastures Ranch and Farm is a sustainable farm that offers both high-quality meat and fresh produce. They prioritize ethical and eco-friendly farming practices, providing customers with a unique and delicious farm-to-table experience.",
+    "location": {
+      "description": "George Bush Park/Eldridge, Houston, TX, USA",
+      "type": "Point",
+      "coordinates": [-95.611633, 29.739769],
+      "address": "P9QQ+W85 Westside, Houston, TX, USA"
+    },
+    "description":"Green Pastures Ranch and Farm is a sustainable family-owned farm that offers a unique farm-to-table experience. The farm raises their animals, such as cows and pigs, in humane and natural environments without the use of hormones or antibiotics. They also grow a variety of fruits and vegetables using organic and sustainable farming practices",
+    "minimumOrder": 20,
+    "imageCover": "",
+    "images": "",
+    "secretFarm": false,
+    "meat": true,
+    "produce": true
+  },
+  {
+    "name":"Heritage Harvest Farm and Ranch",
+    "walletAddress": "0x93046Cab079d9c8241c01bF20D72b102dADce95D",
+    "summary": "Heritage Harvest Farm and Ranch is a farm that produces high-quality meats and fresh produce using sustainable and eco-friendly farming practices.",
+    "location": {
+      "description": "12711 Westheimer Rd, Houston, TX 77077, USA",
+      "type": "Point",
+      "coordinates": [-95.6077211199792, 29.73515936107583],
+      "address": "12711 Westheimer Rd"
+    },
+    "description":"Heritage Harvest Farm and Ranch is a family-owned and operated farm that produces high-quality meats and fresh produce using sustainable and eco-friendly farming practices. The farm is committed to providing customers with the freshest and most flavorful products while preserving the land for future generations.",
+    "minimumOrder": 30,
+    "imageCover": "",
+    "images": "",
+    "secretFarm": false,
+    "meat": true,
+    "produce": true
   }
 
 ]
