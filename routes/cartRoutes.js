@@ -2,15 +2,14 @@ const express = require('express')
 
 const {
   createCart,
-  getCart,
+  getAllCart,
+  getMyCart,
+  getSingleCart,
   updateCart,
   deleteCart,
-  getAllCart,
   setCartUserIds,
-  getMyCart,
-  addToCart,
-  removeFromCart,
-  decreaseQuantity
+  addItem,
+  removeItem
 } = require('../controllers/cartControllers')
 
 const {
@@ -22,31 +21,20 @@ const router = express.Router()
 
 router.use(protect)
 
-router
-  .post('/:id/add', addToCart)
+router.route('/:id/remove').delete(removeItem)
+router.route('/:id/add').post(addItem)
 
-router
-  .delete('/:id/remove', removeFromCart)
+router.route('/myCart').get(getMyCart)
 
-router
-  .patch('/:id/decrease', decreaseQuantity)
-    
+router.route('/')
+  // .post(restrictTo('user'), setCartUserIds, createCart)
+  .post(restrictTo('user'), setCartUserIds, addItem)
+  .get(restrictTo('admin'), getAllCart)
 
-// router.route('/mycart').get(getMycart).patch(addItemsTocart)
-router.route('/mycart').get(getMyCart)
-
-router
-  .route('/')
-    .post(setCartUserIds, createCart)
-    .get(restrictTo('admin'), getAllCart)
-
-router
-  .route('/:id')
-    .get(restrictTo('admin'), getCart)
-    .patch(updateCart)
-    // .patch(addItemsTocart)
-    .delete(deleteCart)
-
+router.route('/:id')
+  .get(restrictTo('admin', 'user'), getSingleCart)
+  .patch(restrictTo('user'), updateCart)
+  .delete(restrictTo('user'), deleteCart)
+  // .delete(restrictTo('user'), removeItem)
 
 module.exports = router
-

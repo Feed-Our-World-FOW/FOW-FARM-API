@@ -40,17 +40,17 @@ const productSchema = new mongoose.Schema(
     image: {
       type: [String]
     },
-    ratingsAverage: {
-      type: Number,
-      default: 4.5,
-      min: [1, 'rating must be greater then or equal then 1.0'],
-      max: [5, 'rating must be less then or equal then 5.0'],
-      set: val => Math.round(val * 10) / 10
-    },
-    ratingsQuantity: {
-      type: Number,
-      default: 0
-    },
+    // ratingsAverage: {
+    //   type: Number,
+    //   default: 4.5,
+    //   min: [1, 'rating must be greater then or equal then 1.0'],
+    //   max: [5, 'rating must be less then or equal then 5.0'],
+    //   set: val => Math.round(val * 10) / 10
+    // },
+    // ratingsQuantity: {
+    //   type: Number,
+    //   default: 0
+    // },
     weight: {
       type: String,
       required: [true, 'must have weight']

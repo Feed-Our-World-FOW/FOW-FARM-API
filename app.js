@@ -13,10 +13,17 @@ const cors = require('cors')
 const farmRouter = require('./routes/farmRoutes')
 const userRouter = require('./routes/userRoutes')
 const reviewRouter = require('./routes/reviewRoutes')
-const cartRouter = require('./routes/cartRoutes')
+// const cartRouter = require('./routes/cartRoutes')
 const productRouter = require('./routes/productRoute')
 const productReviewRouter = require('./routes/reviewProductRoute')
 const addressRouter = require('./routes/addressRoutes')
+
+const businessProfileRouter = require('./routes/businessProfileRoute')
+const consumerProfileRouter = require('./routes/consumerProfileRoutes')
+const stockProductRouter = require('./routes/stockProductRoutes')
+const ondemandProductRouter = require('./routes/ondemandProductRoutes')
+const cartRouter = require('./routes/cartRoutes')
+
 const app = express()
 
 app.use(cors())
@@ -66,10 +73,16 @@ app.use('/public', express.static('public'))
 app.use('/api/v1/farm', farmRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
-app.use('/api/v1/cart', cartRouter)
+// app.use('/api/v1/cart', cartRouter)
 app.use('/api/v1/addProduct', productRouter)
 app.use('/api/v1/reviewProduct', productReviewRouter)
 app.use('/api/v1/address', addressRouter)
+
+app.use('/api/v1/business', businessProfileRouter)
+app.use('/api/v1/consumer', consumerProfileRouter)
+app.use('/api/v1/stockProduct', stockProductRouter)
+app.use('/api/v1/ondemandProduct', ondemandProductRouter)
+app.use('/api/v1/cart', cartRouter)
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
@@ -79,4 +92,3 @@ app.use(globalErrorHandler)
 
 module.exports = app
 
-// 26

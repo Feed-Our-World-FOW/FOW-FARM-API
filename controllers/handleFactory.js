@@ -65,9 +65,10 @@ exports.getOne = (Model, popOptions) =>
 exports.getAll = Model =>
   catchAsync(async (req, res, next) => {
     // To allow for nested GET reviews on farm (hack)
+    // console.log(req.query)
     let filter = {};
-    if (req.params.farmId) filter = { farm: req.params.farmId };
-    if (req.params.productId) filter = { product: req.params.productId };
+    // if (req.params.farmId) filter = { farm: req.params.farmId };
+    // if (req.params.productId) filter = { product: req.params.productId };
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()

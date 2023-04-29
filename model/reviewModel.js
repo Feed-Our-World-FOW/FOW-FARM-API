@@ -1,15 +1,8 @@
 const mongoose = require('mongoose')
-const Farm = require('./farmModel')
-// const Meat = require('./meatModel')
-// const Produce = require('./produceModel')
-const Product = require('./productModel')
+const BusinessProfile = require('./businessProfileModel')
 
 const reviewSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: [true, 'Review can not be empty!']
-    },
     review: {
       type: String,
       required: [true, 'Review can not be empty!']
@@ -23,19 +16,11 @@ const reviewSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     },
-    farm: {
+    businessProfile: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Farm',
-      required: [true, 'review must belongs to a farm']
+      ref: 'BusinessProfile',
+      required: [true, 'Review must belongs to a Business Profile']
     },
-    // meat: {
-    //   type: mongoose.Schema.ObjectId,
-    //   ref: 'Meat',
-    // },
-    // produce: {
-    //   type: mongoose.Schema.ObjectId,
-    //   ref: 'Produce',
-    // },
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
@@ -60,128 +45,29 @@ reviewSchema.pre(/^find/, function(next) {
   next()
 })
 
-// Calculate the average rating of a farm by reviews
-reviewSchema.statics.calcAverageRating = async function(farmId) {
-
-  // Calculate the statistics of number of rating and average
+reviewSchema.statics.calcAverageRating = async function(businessProfileId) {
   const stats = await this.aggregate([
     {
-      $match: { farm: farmId }
+      $match: { businessProfile: businessProfileId }
     },
     {
       $group: {
-        _id: '$farm',
+        _id: '$businessProfile',
         nRating: { $sum: 1 },
         avgRating: { $avg: '$rating' }
       }
     }
   ])
 
-  // Set the farm's number of rating and rating average
   if(stats.length > 0) {
-    await Farm.findByIdAndUpdate(farmId, {
+    await BusinessProfile.findByIdAndUpdate(businessProfileId, {
       ratingsQuantity: stats[0].nRating,
       ratingsAverage: stats[0].avgRating
     })
   }else {
-    await Farm.findByIdAndUpdate(farmId, {
+    await BusinessProfile.findByIdAndUpdate(businessProfileId, {
       ratingsQuantity: 0,
-      ratingsAverage: 4.5
-    })
-  }
-}
-
-// Calculate the average rating of a farm by reviews
-// reviewSchema.statics.calcAverageRatingOfMeat = async function(meatId) {
-
-//   // Calculate the statistics of number of rating and average
-//   const stats = await this.aggregate([
-//     {
-//       $match: { meat: meatId }
-//     },
-//     {
-//       $group: {
-//         _id: '$meat',
-//         nRating: { $sum: 1 },
-//         avgRating: { $avg: '$rating' }
-//       }
-//     }
-//   ])
-
-//   // Set the farm's number of rating and rating average
-//   if(stats.length > 0) {
-//     await Meat.findByIdAndUpdate(meatId, {
-//       ratingsQuantity: stats[0].nRating,
-//       ratingsAverage: stats[0].avgRating
-//     })
-//   }else {
-//     await Meat.findByIdAndUpdate(meatId, {
-//       ratingsQuantity: 0,
-//       ratingsAverage: 4.5
-//     })
-//   }
-// }
-
-
-// Calculate the average rating of a farm by reviews
-// reviewSchema.statics.calcAverageRatingOfProduce = async function(produceId) {
-
-//   // Calculate the statistics of number of rating and average
-//   const stats = await this.aggregate([
-//     {
-//       $match: { produce: produceId }
-//     },
-//     {
-//       $group: {
-//         _id: '$produce',
-//         nRating: { $sum: 1 },
-//         avgRating: { $avg: '$rating' }
-//       }
-//     }
-//   ])
-
-//   // Set the farm's number of rating and rating average
-//   if(stats.length > 0) {
-//     await Produce.findByIdAndUpdate(produceId, {
-//       ratingsQuantity: stats[0].nRating,
-//       ratingsAverage: stats[0].avgRating
-//     })
-//   }else {
-//     await Produce.findByIdAndUpdate(produceId, {
-//       ratingsQuantity: 0,
-//       ratingsAverage: 4.5
-//     })
-//   }
-// }
-
-
-// Calculate the average rating of a farm by reviews
-reviewSchema.statics.calcAverageRatingOfProduct = async function(productId) {
-
-  // Calculate the statistics of number of rating and average
-  const stats = await this.aggregate([
-    {
-      $match: { product: productId }
-    },
-    {
-      $group: {
-        _id: '$product',
-        nRating: { $sum: 1 },
-        avgRating: { $avg: '$rating' }
-      }
-    }
-  ])
-
-  // Set the farm's number of rating and rating average
-  if(stats.length > 0) {
-    await Product.findByIdAndUpdate(productId, {
-      ratingsQuantity: stats[0].nRating,
-      ratingsAverage: stats[0].avgRating
-    })
-  }else {
-    await Product.findByIdAndUpdate(productId, {
-      ratingsQuantity: 0,
-      ratingsAverage: 4.5
+      ratingsAverage: 0
     })
   }
 }
@@ -190,11 +76,8 @@ reviewSchema.statics.calcAverageRatingOfProduct = async function(productId) {
 // Call the function after a new review is being created 
 // (not working on updateReview or deleteReview )
 reviewSchema.post('save', function() {
-  this.constructor.calcAverageRating(this.farm)
+  this.constructor.calcAverageRating(this.businessProfile)
 
-  // this.constructor.calcAverageRatingOfMeat(this.meat)
-  // this.constructor.calcAverageRatingOfProduce(this.produce)
-  this.constructor.calcAverageRatingOfProduct(this.product)
 })
 
 // --------------Set up the function "calcAverageRating" for "findOneAndUpdate" & "findOneAndDelete"
@@ -204,11 +87,8 @@ reviewSchema.pre(/^findOneAnd/, async function(next) {
 })
 
 reviewSchema.post(/^findOneAnd/, async function() {
-  await this.r.constructor.calcAverageRating(this.r.farm)
+  await this.r.constructor.calcAverageRating(this.r.businessProfile)
 
-  // await this.r.constructor.calcAverageRatingOfMeat(this.r.meat)
-  // await this.r.constructor.calcAverageRatingOfProduce(this.r.produce)
-  await this.r.constructor.calcAverageRatingOfProduct(this.r.product)
 })
 // -------------------
 

@@ -1,21 +1,28 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const cartSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      // required: [true, "cart must contain some user"]
     },
     items: [
       {
-        product: {
+        stockProduct: {
           type: mongoose.Schema.ObjectId,
-          ref: 'Product'
+          ref: 'StockProduct'
         },
-        quantity: {
+        ondemandProduct: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'OndemandProduct'
+        },
+        orderQuantity: {
           type: Number,
           default: 0
+        },
+        orderUnit: {
+          type: String,
+          enum: ['lb', 'kg', 'oz']
         }
       }
     ],
@@ -30,35 +37,136 @@ const cartSchema = new mongoose.Schema(
   }
 )
 
+// cartSchema.pre('save', async function(next) {
+//   const itemPromises = this.items.map(async item => {
+//     const product = await this.model('StockProduct').findById(item.stockProduct)
+//     item.stockProduct = product
+//     return item
+//   })
+
+//   this.items = await Promise.all(itemPromises)
+
+//   this.subTotal = this.items.reduce((total, item) => {
+//     return total + (item.stockProduct.price * item.orderQuantity)
+//   }, 0)
+
+//   next()
+// })
+
+
+// cartSchema.pre('save', async function(next) {
+//   const itemPromises = this.items.map(async item => {
+//     const product = await this.model('OndemandProduct').findById(item.ondemandProduct)
+//     item.ondemandProduct = product
+//     // console.log(item)
+//     return item
+//   })
+
+//   this.items = await Promise.all(itemPromises)
+
+//   this.subTotal = this.items.reduce((total, item) => {
+//     return total + (item.ondemandProduct.price * item.orderQuantity)
+//   }, 0)
+
+//   next()
+// })
+
+
 cartSchema.pre('save', async function(next) {
   const itemPromises = this.items.map(async item => {
-    const product = await this.model('Product').findById(item.product)
-    item.product = product
+    const stockProduct = await this.model('StockProduct').findById(item.stockProduct)
+    const ondemandProduct = await this.model('OndemandProduct').findById(item.ondemandProduct)
+
+    if(stockProduct) {
+      item.stockProduct = stockProduct
+    } else if(ondemandProduct) {
+      item.ondemandProduct = ondemandProduct
+    }
+
     return item
   })
 
   this.items = await Promise.all(itemPromises)
 
   this.subTotal = this.items.reduce((total, item) => {
-    return total + (item.product.price * item.quantity)
+    if(item.stockProduct) {
+      
+      if(item.stockProduct.unit === "oz") {
+        if(item.orderUnit === "kg") {
+          return total + (item.stockProduct.price * 0.0283495231 * item.orderQuantity)
+        }
+        else if(item.orderUnit === "lb") {
+          return total + (item.stockProduct.price * 0.0625 * item.orderQuantity)
+        }
+      } else if(item.stockProduct.unit === "lb") {
+        if(item.orderUnit === "kg") {
+          return total + (item.stockProduct.price * 0.45359237 * item.orderQuantity)
+        }
+        else if(item.orderUnit === "oz") {
+          return total + (item.stockProduct.price * 15.9999995 * item.orderQuantity)
+        }
+      } else if(item.stockProduct.unit === "kg") {
+        if(item.orderUnit === "lb") {
+          return total + (item.stockProduct.price * 2.20462262 * item.orderQuantity)
+        }
+        else if(item.orderUnit === "oz") {
+          return total + (item.stockProduct.price * 35.2739619 * item.orderQuantity)
+        }
+      }
+
+      
+    } else if(item.ondemandProduct) {
+
+      if(item.ondemandProduct.unit === "oz") {
+        if(item.orderUnit === "kg") {
+          return total + (item.ondemandProduct.price * 0.0283495231 * item.orderQuantity)
+        }
+        else if(item.orderUnit === "lb") {
+          return total + (item.ondemandProduct.price * 0.0625 * item.orderQuantity)
+        }
+      } else if(item.ondemandProduct.unit === "lb") {
+        if(item.orderUnit === "kg") {
+          return total + (item.ondemandProduct.price * 0.45359237 * item.orderQuantity)
+        }
+        else if(item.orderUnit === "oz") {
+          return total + (item.ondemandProduct.price * 15.9999995 * item.orderQuantity)
+        }
+      } else if(item.ondemandProduct.unit === "kg") {
+        if(item.orderUnit === "lb") {
+          return total + (item.ondemandProduct.price * 2.20462262 * item.orderQuantity)
+        }
+        else if(item.orderUnit === "oz") {
+          return total + (item.ondemandProduct.price * 35.2739619 * item.orderQuantity)
+        }
+      }
+    }
   }, 0)
 
   next()
 })
 
+
 cartSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'user',
-    select: 'name photo',
+    select: 'name photo'
+  })
+
+  next()
+})
+
+cartSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'items.stockProduct',
+    select: 'businessProfile product name image unit price -producer'
   })
   next()
 })
 
-
 cartSchema.pre(/^find/, function(next) {
   this.populate({
-    path: 'items.product',
-    select: 'name image summary price weight amount farm'
+    path: 'items.ondemandProduct',
+    select: 'businessProfile product name image unit price -producer'
   })
   next()
 })
