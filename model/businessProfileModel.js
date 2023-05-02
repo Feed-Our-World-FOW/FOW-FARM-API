@@ -31,12 +31,13 @@ const businessProfileSchema = new mongoose.Schema(
     shippingRadius: {
       type: Number
     },
-    stockProduct: {
+    // stockProduct: {
 
+    // },
+    orderReceived: {
+      type: Number,
+      default: 0
     },
-    orderReceived: [
-
-    ],
     ratingsAverage: {
       type: Number,
       default: 0,
@@ -67,17 +68,20 @@ businessProfileSchema.pre(/^find/, function(next) {
   next()
 })
 
-
-
-
-// businessProfileSchema.virtual('address', {
-//   ref: 'Address',
-//   foreignField: 'user',
-//   localField: 'user'
-// })
-
 businessProfileSchema.virtual('reviews', {
   ref: 'Review',
+  foreignField: 'businessProfile',
+  localField: '_id'
+})
+
+businessProfileSchema.virtual('stockProducts', {
+  ref: 'StockProduct',
+  foreignField: 'businessProfile',
+  localField: '_id'
+})
+
+businessProfileSchema.virtual('ondemandProducts', {
+  ref: 'OndemandProduct',
   foreignField: 'businessProfile',
   localField: '_id'
 })

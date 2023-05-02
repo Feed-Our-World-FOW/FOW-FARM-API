@@ -11,7 +11,7 @@ const {
   check,
   uploadstockProductPhoto,
   resizestockProductPhoto,
-  getTotal
+  getMyStockProduct
 } = require('../controllers/stockProductControllers')
 
 const {
@@ -20,6 +20,8 @@ const {
 } = require('../controllers/authControllers')
 
 router.use(protect)
+
+router.route('/myStockProduct').get(getMyStockProduct)
 
 router.route('/')
   .post(restrictTo('business'), setBusinessId, check, createStockProduct)

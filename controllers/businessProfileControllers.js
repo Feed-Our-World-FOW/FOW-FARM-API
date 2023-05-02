@@ -1,6 +1,8 @@
 const BusinessProfile = require('../model/businessProfileModel')
+const ConsumerProfile = require('../model/consumerProfileModel')
 const factory = require('./handleFactory')
 const catchAsync = require('../utils/catchAsync')
+const AppError = require('../utils/appError')
 
 exports.createBusinessProfile = catchAsync(async (req, res, next) => {
   const doc = await BusinessProfile.create(
@@ -25,6 +27,149 @@ exports.getMyProfile = (req, res, next) => {
 
 exports.getAllProfiles = factory.getAll(BusinessProfile)
 // exports.getSingleProfile = factory.getOne(BusinessProfile, { path: 'address reviews' })
-exports.getSingleProfile = factory.getOne(BusinessProfile, { path: 'reviews' })
+exports.getSingleProfile = factory.getOne(BusinessProfile, { path: 'reviews stockProducts ondemandProducts' })
 exports.updateProfile = factory.updateOne(BusinessProfile)
 exports.deleteProfile = factory.deleteOne(BusinessProfile)
+
+
+exports.getBusinessStats = catchAsync(async (req, res) => {
+  const stats = await BusinessProfile.aggregate([
+    {
+      $match: { ratingsAverage: { $gte: 0 } }
+    },
+    {
+      $group: {
+        _id: '$ratingsAverage',
+        numBusiness: { $sum: 1 },
+        numRatings: { $sum: 'ratingsQuantity' },
+        lowRating: { $min: '$ratingsAverage' },
+        highRating: { $max: '$ratingsAverage' },
+        avgRating: { $avg: '$ratingsAverage' },
+      }
+    },
+    {
+      $sort: { avgRating: 1 }
+    }
+  ])
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      stats
+    }
+  })
+})
+
+
+exports.getBusinessWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params
+  const [ lat, lng ] = latlng.split(',')
+
+  const radius = unit === 'ml' ? distance / 3963.2 : distance / 6378.1
+
+  if(!lat || !lng) {
+    next(new AppError('Please provide latitude and longitude in the format lat, lng', 400))
+  }
+
+  const business = await BusinessProfile.find({
+    location: {
+      $geoWithin: { $centerSphere: [[lng, lat], radius] }
+    }
+  })
+
+  res.status(200).json({
+    status: 'success',
+    result: business.length,
+    data: {
+      data: business
+    }
+  })
+})
+
+exports.getDistances = catchAsync(async (req, res, next) => {
+  const { latlng, unit } = req.params
+  const [ lat, lng ] = latlng.split(',')
+
+  const multiplier = unit === 'mi' ? 0.000621371 : 0.001
+
+  if(!lat || !lng) {
+    next(new AppError('Please provide latitude and longitude in the format of lat, lng', 400))
+  }
+
+  const distance = await BusinessProfile.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lng * 1, lat * 1]
+        },
+        distanceField: 'distance',
+        distanceMultiplier: multiplier
+      }
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1
+      }
+    }
+  ])
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: distance
+    }
+  })
+})
+
+
+exports.getMyDistances = catchAsync(async (req, res, next) => {
+  const consumerProfile = await ConsumerProfile.findOne({ user: req.user.id })
+  
+  if(!consumerProfile) {
+    return next(new AppError(`No consumer profile exists with that Id`, 404))
+  }
+  
+  if(!consumerProfile.location || !consumerProfile.location.coordinates) {
+    return next(new AppError(`Please update your location`, 404))
+  }
+
+  const latlng = consumerProfile.location.coordinates
+  const lat = latlng[1]
+  const lng = latlng[0]
+
+  const { unit } = req.params
+
+  const multiplier = unit === 'mi' ? 0.000621371 : 0.001
+
+  if(!lat || !lng) {
+    next(new AppError('Please provide latitude and longitude in the format of lat, lng', 400))
+  }
+
+  const distance = await BusinessProfile.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lng * 1, lat * 1]
+        },
+        distanceField: 'distance',
+        distanceMultiplier: multiplier
+      }
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1
+      }
+    }
+  ])
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: distance
+    }
+  })
+})

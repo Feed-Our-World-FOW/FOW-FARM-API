@@ -39,17 +39,23 @@ exports.resizeOndemandProductPhoto = catchAsync(async (req, res, next) => {
   next()
 })
 
-exports.setBusinessId = (req, res, next) => {
-  if(!req.body.businessProfile) req.body.businessProfile = req.params.businessId
+exports.setBusinessId = catchAsync(async (req, res, next) => {
+  const userId = req.user.id
+  const business = await BusinessProfile.findOne({ user: userId })
+  if(!business) {
+    return next(new AppError(`Can't find the document with that Id`, 404))
+  }
+  if(!req.body.businessProfile) req.body.businessProfile = business._id
+
   next()
-}
+})
 
 exports.check = catchAsync(async (req, res, next) => {
   const response = await BusinessProfile.findById(req.body.businessProfile)
 
-  if(!response) {
-    return next(new AppError(`Can't find the document with that Id`, 404))
-  }
+  // if(!response) {
+  //   return next(new AppError(`Can't find the document with that Id`, 404))
+  // }
   
   if(
       !response.location?.coordinates || 
@@ -120,6 +126,21 @@ exports.getSingleOndemandProduct = catchAsync(async (req, res, next) => {
       data: doc
     }
   });
+})
+
+exports.getMyOndemandProduct = catchAsync(async (req, res, next) => {
+  const data = await OndemandProduct.find({ producer: req.user.id })
+
+  if(!data) {
+    return next(new AppError(`You don't have any ondemand product listed`, 404))
+  }
+  
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: data
+    }
+  })
 })
 
 exports.createOndemandProduct = catchAsync(async (req, res, next) => {

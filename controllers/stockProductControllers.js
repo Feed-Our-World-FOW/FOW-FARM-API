@@ -39,34 +39,24 @@ exports.resizestockProductPhoto = catchAsync(async (req, res, next) => {
   next()
 })
 
-// exports.getTotal = catchAsync(async (req, res, next) => {
-//   const productId = req.params.id
-//   const userId = req.user.id
-//   console.log(productId)
-//   let stockProduct = await StockProduct.findById(productId)
-//   console.log(stockProduct)
-//   stockProduct.orderQuantity += 1
 
-//   res.status(200).json({
-//     status: 'success',
-//     data: {
-//       data: stockProduct
-//     }
-//   })
+exports.setBusinessId = catchAsync(async(req, res, next) => {
+  const userId = req.user.id
+  const business = await BusinessProfile.findOne({ user: userId })
+  if(!business) {
+    return next(new AppError(`Can't find the document with that Id`, 404))
+  }
+  if(!req.body.businessProfile) req.body.businessProfile = business._id
 
-// })
-
-exports.setBusinessId = (req, res, next) => {
-  if(!req.body.businessProfile) req.body.businessProfile = req.params.businessId
   next()
-}
+})
 
 exports.check = catchAsync(async (req, res, next) => {
   const response = await BusinessProfile.findById(req.body.businessProfile)
 
-  if(!response) {
-    return next(new AppError(`Can't find the document with that Id`, 404))
-  }
+  // if(!response) {
+  //   return next(new AppError(`Can't find the document with that Id`, 404))
+  // }
   
   if(
       !response.location?.coordinates || 
@@ -140,6 +130,22 @@ exports.getSingleStockProduct = catchAsync(async (req, res, next) => {
   });
 })
 
+exports.getMyStockProduct = catchAsync(async (req, res, next) => {
+  const data = await StockProduct.find({ producer: req.user.id })
+
+  if(!data) {
+    return next(new AppError(`You don't have any stock product listed`, 404))
+  }
+  
+  res.status(200).json({
+    status: 'success',
+    result: data.length,
+    data: {
+      data: data
+    }
+  })
+})
+
 
 exports.createStockProduct = catchAsync(async (req, res, next) => {
 
@@ -151,9 +157,9 @@ exports.createStockProduct = catchAsync(async (req, res, next) => {
 
   const doc = await StockProduct.create(
     {
+      producer: req.user.id,
       ...req.body,
       // ...req.file,
-      producer: req.user.id
     }
   )
 
@@ -166,6 +172,5 @@ exports.createStockProduct = catchAsync(async (req, res, next) => {
 })
 
 exports.getAllStockProducts = factory.getAll(StockProduct)
-// exports.getSingleStockProduct = factory.getOne(StockProduct)
 exports.updateStockProduct = factory.updateOne(StockProduct)
 exports.deleteStockProduct = factory.deleteOne(StockProduct)

@@ -21,12 +21,14 @@ const consumerProfileSchema = new mongoose.Schema(
       type: String,
       unique: true
     },
-    orders: [
-
-    ],
-    favourite: [
-
-    ]
+    orders: {
+      type: Number,
+      default: 0
+    },
+    favourite: {
+      type: Number,
+      default: 0
+    }
   },
   {
     toJSON: { virtuals: true },

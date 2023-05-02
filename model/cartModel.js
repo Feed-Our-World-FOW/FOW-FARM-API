@@ -37,40 +37,6 @@ const cartSchema = new mongoose.Schema(
   }
 )
 
-// cartSchema.pre('save', async function(next) {
-//   const itemPromises = this.items.map(async item => {
-//     const product = await this.model('StockProduct').findById(item.stockProduct)
-//     item.stockProduct = product
-//     return item
-//   })
-
-//   this.items = await Promise.all(itemPromises)
-
-//   this.subTotal = this.items.reduce((total, item) => {
-//     return total + (item.stockProduct.price * item.orderQuantity)
-//   }, 0)
-
-//   next()
-// })
-
-
-// cartSchema.pre('save', async function(next) {
-//   const itemPromises = this.items.map(async item => {
-//     const product = await this.model('OndemandProduct').findById(item.ondemandProduct)
-//     item.ondemandProduct = product
-//     // console.log(item)
-//     return item
-//   })
-
-//   this.items = await Promise.all(itemPromises)
-
-//   this.subTotal = this.items.reduce((total, item) => {
-//     return total + (item.ondemandProduct.price * item.orderQuantity)
-//   }, 0)
-
-//   next()
-// })
-
 
 cartSchema.pre('save', async function(next) {
   const itemPromises = this.items.map(async item => {

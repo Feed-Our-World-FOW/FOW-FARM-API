@@ -7,7 +7,11 @@ const {
   getSingleProfile,
   updateProfile,
   deleteProfile,
-  getMyProfile
+  getMyProfile,
+  getBusinessStats,
+  getBusinessWithin,
+  getDistances,
+  getMyDistances
 } = require('../controllers/businessProfileControllers')
 
 const {
@@ -19,7 +23,15 @@ const stockProductRouter = require('./stockProductRoutes')
 
 router.use(protect)
 
-router.use('/:businessId/addStockProduct', stockProductRouter)
+router.route('/farm-stats').get(getBusinessStats)
+
+router.route('/:businessId/addStockProduct', stockProductRouter)
+
+router.route('/farms-within/:distance/center/:latlng/unit/:unit').get(getBusinessWithin)
+
+router.route('/distance/mylocation/unit/:unit').get(restrictTo('user'), getMyDistances)
+router.route('/distance/:latlng/unit/:unit').get(getDistances)
+
 
 router.route('/myProfile').get(getMyProfile, getAllProfiles)
 

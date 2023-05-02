@@ -10,7 +10,8 @@ const {
   setBusinessId,
   check,
   uploadOndemandProductPhoto,
-  resizeOndemandProductPhoto
+  resizeOndemandProductPhoto,
+  getMyOndemandProduct
 } = require('../controllers/ondemandProductControllers')
 
 const {
@@ -19,6 +20,8 @@ const {
 } = require('../controllers/authControllers')
 
 router.use(protect)
+
+router.route('/myOndemandProduct').get(getMyOndemandProduct)
 
 router.route('/')
   .post(restrictTo('business'), setBusinessId, check, createOndemandProduct)

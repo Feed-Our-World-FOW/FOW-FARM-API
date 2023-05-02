@@ -1,46 +1,40 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
+const ConsumerProfile = require('./consumerProfileModel')
+const BusinessProfile = require('./businessProfileModel')
 
 const buySchema = new mongoose.Schema(
   {
-    user: {
+    createdAt: {
+      type: Date,
+      default: Date.now()
+    },
+    consumerProfile: {
       type: mongoose.Schema.ObjectId,
-      ref: 'User',
-      // required: [true, "cart must contain some user"]
+      ref: 'ConsumerProfile',
+      required: [true, 'Must belongs to a consumer profile']
     },
-    items: [
-      {
-        product: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'Product'
-        },
-        quantity: {
-          type: Number,
-          default: 0
-        }
-      }
-    ],
-    totalAmount: {
-      type: Number,
-      require: [true, "must contains totalAmount"]
+    cart: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Cart',
+      required: [true, 'Must have a cart']
     },
-    totalQuentity: {
-      type: Number,
-      require: [true, "must contains totalQuentity"]
-    },
-    location: {
-      type: {
-        type: String,
-        default: 'Point',
-        enum: ['Point']
-      },
-      coordinates: [Number],
-      address: String,
-      description: String
+    businessProfile: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'BusinessProfile',
+      required: [true, 'Must belongs to a business profile']
     },
     paymentOption: {
       type: String,
       enum: ['Cash on delivery', 'UPI', 'Crypto', 'Strype'],
       required: [true, "Must required payament option"]
+    },
+    paid: {
+      type: Boolean,
+      default: false
+    },
+    delivered: {
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -49,7 +43,89 @@ const buySchema = new mongoose.Schema(
   }
 )
 
-// buySchema.pre()
+buySchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'consumerProfile',
+    select: 'user location'
+  })
+
+  next()
+})
+
+buySchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'cart',
+    select: '-user items subTotal'
+  })
+
+  next()
+})
+
+buySchema.statics.calcOrderNumber = async function(consumerProfileId) {
+  const stats = await this.aggregate([
+    {
+      $match: { consumerProfile: consumerProfileId._id }
+    },
+    {
+      $group: {
+        _id: '$consumerProfile',
+        nOrder: { $sum: 1 }
+      }
+    }
+  ])
+
+  if(stats.length > 0) {
+    await ConsumerProfile.findByIdAndUpdate(consumerProfileId._id, {
+      orders: stats[0].nOrder
+    })
+    
+  } else {
+    await ConsumerProfile.findByIdAndUpdate(consumerProfileId._id, {
+      orders: 0
+    })
+    
+  }
+}
+
+buySchema.statics.calcOrderReceived = async function(businessProfileId) {
+  const stats = await this.aggregate([
+    {
+      $match: { businessProfile: businessProfileId._id }
+    },
+    {
+      $group: {
+        _id: '$businessProfile',
+        nOrderReceived: { $sum: 1 }
+      }
+    }
+  ])
+
+  if(stats.length > 0) {
+    await BusinessProfile.findByIdAndUpdate(businessProfileId._id, {
+      orderReceived: stats[0].nOrderReceived
+    })
+  } else {
+    await BusinessProfile.findByIdAndUpdate(businessProfileId._id, {
+      orderReceived: 0
+    })
+  }
+}
+
+buySchema.post('save', function() {
+  this.constructor.calcOrderNumber(this.consumerProfile)
+  this.constructor.calcOrderReceived(this.businessProfile)
+})
+
+buySchema.pre(/^findOneAnd/, async function(next) {
+  this.r = await this.findOne()
+  next()
+})
+
+buySchema.post(/^findOneAnd/, async function() {
+  await this.r.constructor.calcOrderNumber(this.r.consumerProfile)
+  await this.r.constructor.calcOrderReceived(this.r.businessProfile)
+})
+
 
 const Buy = mongoose.model('Buy', buySchema)
 
