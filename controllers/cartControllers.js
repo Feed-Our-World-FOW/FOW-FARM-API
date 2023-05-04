@@ -29,8 +29,8 @@ exports.addItem = catchAsync(async (req, res, next) => {
   const stock = await StockProduct.findById(productId)
   const ondemand = await OndemandProduct.findById(productId)
 
-  console.log("stock: ", stock)
-  console.log("ondemand: ", ondemand)
+  // console.log("stock: ", stock)
+  // console.log("ondemand: ", ondemand)
 
   const businessProfile = (stock || ondemand)
   const businessProfileId = await businessProfile.businessProfile._id

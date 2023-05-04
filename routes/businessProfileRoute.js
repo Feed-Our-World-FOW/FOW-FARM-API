@@ -21,7 +21,7 @@ const {
 
 const stockProductRouter = require('./stockProductRoutes')
 
-router.use(protect)
+// router.use(protect)
 
 router.route('/farm-stats').get(getBusinessStats)
 
@@ -29,15 +29,17 @@ router.route('/:businessId/addStockProduct', stockProductRouter)
 
 router.route('/farms-within/:distance/center/:latlng/unit/:unit').get(getBusinessWithin)
 
-router.route('/distance/mylocation/unit/:unit').get(restrictTo('user'), getMyDistances)
+router.route('/distance/mylocation/unit/:unit').get(restrictTo('user'), protect, getMyDistances)
 router.route('/distance/:latlng/unit/:unit').get(getDistances)
 
 
-router.route('/myProfile').get(getMyProfile, getAllProfiles)
+router.route('/myProfile').get(protect, getMyProfile, getAllProfiles)
 
 router.route('/')
-  .post(restrictTo('business'), createBusinessProfile)
+  .post(restrictTo('business'), protect, createBusinessProfile)
   .get(getAllProfiles)
+
+router.use(protect)
 
 router.route('/:id')
   .get(getSingleProfile)

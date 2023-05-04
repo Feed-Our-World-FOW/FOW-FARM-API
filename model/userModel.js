@@ -45,19 +45,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
-  },
-  // addressId: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: 'Address'
-  // },
-  // farmId: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: 'Farm'
-  // },
-  // productId: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: 'User'
-  // }
+  }
 },
 {
   toJSON: { virtuals: true },

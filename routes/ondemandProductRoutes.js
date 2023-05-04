@@ -19,13 +19,14 @@ const {
   restrictTo
 } = require('../controllers/authControllers')
 
-router.use(protect)
 
-router.route('/myOndemandProduct').get(getMyOndemandProduct)
+router.route('/myOndemandProduct').get(protect, getMyOndemandProduct)
 
 router.route('/')
-  .post(restrictTo('business'), setBusinessId, check, createOndemandProduct)
-  .get(getAllOndemandProduct)
+.post(restrictTo('business'), protect, setBusinessId, check, createOndemandProduct)
+.get(getAllOndemandProduct)
+
+router.use(protect)
 
 router.route('/:id')
   .get(getSingleOndemandProduct)

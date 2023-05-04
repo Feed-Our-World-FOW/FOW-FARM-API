@@ -24,6 +24,7 @@ const stockProductRouter = require('./routes/stockProductRoutes')
 const ondemandProductRouter = require('./routes/ondemandProductRoutes')
 const cartRouter = require('./routes/cartRoutes')
 const buyRouter = require('./routes/buyRoutes')
+const favouriteRouter = require('./routes/favouriteFarmRoutes')
 
 const app = express()
 
@@ -85,6 +86,7 @@ app.use('/api/v1/stockProduct', stockProductRouter)
 app.use('/api/v1/ondemandProduct', ondemandProductRouter)
 app.use('/api/v1/cart', cartRouter)
 app.use('/api/v1/buy', buyRouter)
+app.use('/api/v1/favourite', favouriteRouter)
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
