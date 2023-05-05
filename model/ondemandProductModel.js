@@ -23,6 +23,10 @@ const ondemandProductSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    freshRemain: {
+      type: Number,
+      required: [true, "Must contain freshRemain"]
+    },
     capacity: {
       type: Number,
       required: [true, "Must have a capacity"]

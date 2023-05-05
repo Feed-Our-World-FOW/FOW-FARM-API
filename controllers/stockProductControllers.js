@@ -18,7 +18,10 @@ const multerFilter = (req, file, cb) => {
 
 const upload = multer({ 
   storage: multerStorage,
-  fileFilter: multerFilter
+  fileFilter: multerFilter,
+  limits: {
+    fileSize: 1048576
+  }
 })
 
 exports.uploadstockProductPhoto = upload.single('image')
@@ -30,8 +33,9 @@ exports.resizestockProductPhoto = catchAsync(async (req, res, next) => {
 
   await sharp(req.file.buffer)
     .resize(500, 500)
+    .ensureAlpha(0)
     .toFormat('png')
-    .png({ quality: 90 })
+    .png()
     .toFile(`public/img/stockProduct/${req.file.filename}`)
 
   req.body.image = req.file.filename
