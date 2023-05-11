@@ -7,7 +7,8 @@ const {
   getSingleConsumer,
   updateConsumer,
   deleteConsumer,
-  getMyProfile
+  getMyProfile,
+  updateMyConsumerProfile
 } = require('../controllers/consumerProfileControllers')
 
 const {
@@ -17,7 +18,9 @@ const {
 
 router.use(protect)
 
-router.route('/myProfile').get(getMyProfile, getAllConsumers)
+router.route('/myProfile')
+  .get(getMyProfile, getAllConsumers)
+  .patch(updateMyConsumerProfile)
 
 router.route('/')
   .post(restrictTo('user'), createConsumerProfile)

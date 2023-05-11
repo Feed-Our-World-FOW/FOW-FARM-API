@@ -119,18 +119,18 @@ userSchema.methods.createPasswordResetToken = function() {
 //   next()
 // })
 
-userSchema.virtual('myAddress', {
-  ref: 'Address',
-  foreignField: 'user',
-  localField: '_id'
-})
+// userSchema.virtual('myAddress', {
+//   ref: 'Address',
+//   foreignField: 'user',
+//   localField: '_id'
+// })
 
-userSchema.virtual('myFarm', {
-  ref: 'Farm',
-  foreignField: 'owner',
-  localField: '_id',
-  options: { select: 'name' }
-})
+// userSchema.virtual('myFarm', {
+//   ref: 'Farm',
+//   foreignField: 'owner',
+//   localField: '_id',
+//   options: { select: 'name' }
+// })
 
 
 const User = mongoose.model('User', userSchema)

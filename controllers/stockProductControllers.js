@@ -5,6 +5,8 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const multer = require('multer')
 const sharp = require('sharp')
+const { uploadImage } = require('../utils/helpers')
+const convert = require('convert-units')
 
 const multerStorage = multer.memoryStorage()
 
@@ -29,16 +31,13 @@ exports.uploadstockProductPhoto = upload.single('image')
 exports.resizestockProductPhoto = catchAsync(async (req, res, next) => {
   if(!req.file) return next()
 
-  req.file.filename = `stockProduct-${req.user.id}-${req.params.id}-${Date.now()}.png`
-
   await sharp(req.file.buffer)
     .resize(500, 500)
     .ensureAlpha(0)
     .toFormat('png')
     .png()
-    .toFile(`public/img/stockProduct/${req.file.filename}`)
 
-  req.body.image = req.file.filename
+  req.body.image = await uploadImage(req.file)
 
   next()
 })
@@ -86,42 +85,42 @@ exports.getSingleStockProduct = catchAsync(async (req, res, next) => {
   if(doc.unit === 'lb') {
     if(req.query.unit === 'kg') {
       doc.unit = 'kg'
-      doc.stock = doc.stock * 0.45359237
-      doc.price = doc.price * 0.45359237
+      doc.stock = doc.stock * convert(1).from('lb').to('kg')
+      doc.price = doc.price / convert(1).from('lb').to('kg')
     }
   
     if(req.query.unit === 'oz') {
       doc.unit = 'oz'
-      doc.stock = doc.stock * 15.9999995
-      doc.price = doc.price * 15.9999995
+      doc.stock = doc.stock * convert(1).from('lb').to('oz')
+      doc.price = doc.price / convert(1).from('lb').to('oz')
     }
   }
 
   if(doc.unit === 'kg') {
     if(req.query.unit === 'lb') {
       doc.unit = 'lb'
-      doc.stock = doc.stock * 2.20462262
-      doc.price = doc.price * 2.20462262
+      doc.stock = doc.stock * convert(1).from('kg').to('lb')
+      doc.price = doc.price / convert(1).from('kg').to('lb')
     }
   
     if(req.query.unit === 'oz') {
       doc.unit = 'oz'
-      doc.stock = doc.stock * 35.2739619
-      doc.price = doc.price * 35.2739619
+      doc.stock = doc.stock * convert(1).from('kg').to('oz')
+      doc.price = doc.price / convert(1).from('kg').to('oz')
     }
   }
 
   if(doc.unit === 'oz') {
     if(req.query.unit === 'lb') {
       doc.unit = 'lb'
-      doc.stock = doc.stock * 0.0625
-      doc.price = doc.price * 0.0625
+      doc.stock = doc.stock * convert(1).from('oz').to('lb')
+      doc.price = doc.price / convert(1).from('oz').to('lb')
     }
   
     if(req.query.unit === 'kg') {
       doc.unit = 'kg'
-      doc.stock = doc.stock * 0.0283495231
-      doc.price = doc.price * 0.0283495231
+      doc.stock = doc.stock * convert(1).from('oz').to('kg')
+      doc.price = doc.price / convert(1).from('oz').to('kg')
     }
   }
 

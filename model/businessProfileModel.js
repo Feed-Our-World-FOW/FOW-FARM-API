@@ -22,10 +22,16 @@ const businessProfileSchema = new mongoose.Schema(
       address: String,
       description: String
     },
-    shippingCost: {
+    shippingCostStandard: {
       type: Number,
     },
-    shippingTime: {
+    shippingTimeStandard: {
+      type: String
+    },
+    shippingCostExpress: {
+      type: Number
+    },
+    shippingTimeExxpress: {
       type: String
     },
     shippingRadius: {

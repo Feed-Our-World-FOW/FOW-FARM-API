@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const convert = require('convert-units')
 
 const cartSchema = new mongoose.Schema(
   {
@@ -23,6 +24,10 @@ const cartSchema = new mongoose.Schema(
         orderUnit: {
           type: String,
           enum: ['lb', 'kg', 'oz']
+        },
+        orderTotal: {
+          type: Number,
+          default: 0
         }
       }
     ],
@@ -59,24 +64,33 @@ cartSchema.pre('save', async function(next) {
       
       if(item.stockProduct.unit === "oz") {
         if(item.orderUnit === "kg") {
-          return total + (item.stockProduct.price * 0.0283495231 * item.orderQuantity)
+          return total + ((item.stockProduct.price / convert(1).from('oz').to('kg')) * item.orderQuantity)
         }
         else if(item.orderUnit === "lb") {
-          return total + (item.stockProduct.price * 0.0625 * item.orderQuantity)
+          return total + ((item.stockProduct.price / convert(1).from('oz').to('lb')) * item.orderQuantity)
+        }
+        else {
+          return total + (item.stockProduct.price * item.orderQuantity)
         }
       } else if(item.stockProduct.unit === "lb") {
         if(item.orderUnit === "kg") {
-          return total + (item.stockProduct.price * 0.45359237 * item.orderQuantity)
+          return total + ((item.stockProduct.price / convert(1).from('lb').to('kg')) * item.orderQuantity)
         }
         else if(item.orderUnit === "oz") {
-          return total + (item.stockProduct.price * 15.9999995 * item.orderQuantity)
+          return total + ((item.stockProduct.price / convert(1).from('lb').to('oz')) * item.orderQuantity)
+        }
+        else {
+          return total + (item.stockProduct.price * item.orderQuantity)
         }
       } else if(item.stockProduct.unit === "kg") {
         if(item.orderUnit === "lb") {
-          return total + (item.stockProduct.price * 2.20462262 * item.orderQuantity)
+          return total + ((item.stockProduct.price / convert(1).from('kg').to('lb')) * item.orderQuantity)
         }
         else if(item.orderUnit === "oz") {
-          return total + (item.stockProduct.price * 35.2739619 * item.orderQuantity)
+          return total + ((item.stockProduct.price / convert(1).from('kg').to('oz')) * item.orderQuantity)
+        }
+        else {
+          return total + (item.stockProduct.price * item.orderQuantity)
         }
       }
 
@@ -85,24 +99,33 @@ cartSchema.pre('save', async function(next) {
 
       if(item.ondemandProduct.unit === "oz") {
         if(item.orderUnit === "kg") {
-          return total + (item.ondemandProduct.price * 0.0283495231 * item.orderQuantity)
+          return total + ((item.ondemandProduct.price / convert(1).from('oz').to('kg')) * item.orderQuantity)
         }
         else if(item.orderUnit === "lb") {
-          return total + (item.ondemandProduct.price * 0.0625 * item.orderQuantity)
+          return total + ((item.ondemandProduct.price / convert(1).from('oz').to('lb')) * item.orderQuantity)
+        }
+        else {
+          return total + (item.ondemandProduct.price * item.orderQuantity)
         }
       } else if(item.ondemandProduct.unit === "lb") {
         if(item.orderUnit === "kg") {
-          return total + (item.ondemandProduct.price * 0.45359237 * item.orderQuantity)
+          return total + ((item.ondemandProduct.price / convert(1).from('lb').to('kg')) * item.orderQuantity)
         }
         else if(item.orderUnit === "oz") {
-          return total + (item.ondemandProduct.price * 15.9999995 * item.orderQuantity)
+          return total + ((item.ondemandProduct.price / convert(1).from('lb').to('oz')) * item.orderQuantity)
+        }
+        else {
+          return total + (item.ondemandProduct.price * item.orderQuantity)
         }
       } else if(item.ondemandProduct.unit === "kg") {
         if(item.orderUnit === "lb") {
-          return total + (item.ondemandProduct.price * 2.20462262 * item.orderQuantity)
+          return total + ((item.ondemandProduct.price / convert(1).from('kg').to('lb')) * item.orderQuantity)
         }
         else if(item.orderUnit === "oz") {
-          return total + (item.ondemandProduct.price * 35.2739619 * item.orderQuantity)
+          return total + ((item.ondemandProduct.price / convert(1).from('kg').to('oz')) * item.orderQuantity)
+        }
+        else {
+          return total + (item.ondemandProduct.price * item.orderQuantity)
         }
       }
     }

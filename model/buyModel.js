@@ -28,6 +28,15 @@ const buySchema = new mongoose.Schema(
       enum: ['Cash on delivery', 'UPI', 'Crypto', 'Strype'],
       required: [true, "Must required payament option"]
     },
+    deliveryType: {
+      type: String,
+      enum: ['standard', 'express'],
+      default: 'standard',
+      required: [true, "Must have a delivery type"]
+    },
+    totalAmount: {
+      type: Number,
+    },
     paid: {
       type: Boolean,
       default: false
@@ -35,7 +44,8 @@ const buySchema = new mongoose.Schema(
     delivered: {
       type: Boolean,
       default: false
-    }
+    },
+    
   },
   {
     toJSON: { virtuals: true },

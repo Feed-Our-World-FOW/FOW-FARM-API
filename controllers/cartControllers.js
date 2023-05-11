@@ -4,6 +4,8 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const StockProduct = require('../model/stockProductModel')
 const OndemandProduct = require('../model/ondemandProductModel')
+const convert = require('convert-units')
+
 
 exports.setCartUserIds = (req, res, next) => {
   if(!req.body.user) req.body.user = req.user.id
@@ -19,6 +21,53 @@ exports.updateCart = factory.updateOne(Cart)
 exports.deleteCart = factory.deleteOne(Cart)
 
 
+
+const getPrice = async (from, to, price) => {
+  if(from === 'lb') {
+    if(to === 'kg') {
+      return price = price / convert(1).from('lb').to('kg')
+    }
+  
+    else if(to === 'oz') {
+      return price = price / convert(1).from('lb').to('oz')
+    }
+
+    else {
+      return price
+    }
+  }
+
+  if(from === 'kg') {
+    if(to === 'lb') {
+      return price = price / convert(1).from('kg').to('lb')
+    }
+  
+    else if(to === 'oz') {
+      return price = price / convert(1).from('kg').to('oz')
+    }
+
+    else {
+      return price
+    }
+  }
+
+  if(from === 'oz') {
+    if(to === 'lb') {
+      return price = price / convert(1).from('oz').to('lb')
+    }
+  
+    else if(to === 'kg') {
+      return price = price / convert(1).from('oz').to('kg')
+    }
+
+    else {
+      return price
+    }
+  }
+}
+
+
+
 exports.addItem = catchAsync(async (req, res, next) => {
   const userId = req.user.id
   const productId = req.params.id
@@ -28,20 +77,37 @@ exports.addItem = catchAsync(async (req, res, next) => {
 
   const stock = await StockProduct.findById(productId)
   const ondemand = await OndemandProduct.findById(productId)
-
-  // console.log("stock: ", stock)
-  // console.log("ondemand: ", ondemand)
-
+  
   const businessProfile = (stock || ondemand)
+  
+  const stockPrice = Number(await getPrice(stock?.unit, unit, stock?.price)) * quantity
+  const ondemandPrice = Number(await getPrice(ondemand?.unit, unit, ondemand?.price)) * quantity
+
   const businessProfileId = await businessProfile.businessProfile._id
 
   let cart = await Cart.findOne({ user: userId })
   if(!cart) {
     // If cart does not exists
     if(stock) {
-      cart = await Cart.create({ user: userId, items: [{ stockProduct: productId, orderQuantity: quantity, orderUnit: unit }] })
+      cart = await Cart.create({ 
+        user: userId, 
+        items: [{ 
+          stockProduct: productId, 
+          orderQuantity: quantity, 
+          orderUnit: unit, 
+          orderTotal: ondemandPrice || stockPrice 
+        }] 
+      })
     } else if(ondemand) {
-      cart = await Cart.create({ user: userId, items: [{ ondemandProduct: productId, orderQuantity: quantity, orderUnit: unit }] })
+      cart = await Cart.create({ 
+        user: userId, 
+        items: [{ 
+          ondemandProduct: productId, 
+          orderQuantity: quantity, 
+          orderUnit: unit,
+          orderTotal: ondemandPrice || stockPrice 
+        }] 
+      })
     }
     
   }else {
@@ -74,9 +140,19 @@ exports.addItem = catchAsync(async (req, res, next) => {
     }
 
     if(stock) {
-      cart.items.push({ stockProduct: productId, orderQuantity: quantity, orderUnit: unit })
+      cart.items.push({ 
+        stockProduct: productId, 
+        orderQuantity: quantity, 
+        orderUnit: unit,
+        orderTotal: ondemandPrice || stockPrice 
+      })
     } else if(ondemand) {
-      cart.items.push({ ondemandProduct: productId, orderQuantity: quantity, orderUnit: unit })
+      cart.items.push({ 
+        ondemandProduct: productId, 
+        orderQuantity: quantity, 
+        orderUnit: unit,
+        orderTotal: ondemandPrice || stockPrice 
+      })
     }
     
     cart = await cart.save()
