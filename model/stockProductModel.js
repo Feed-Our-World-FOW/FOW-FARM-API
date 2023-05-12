@@ -98,7 +98,7 @@ stockProductSchema.pre(/^find/, function(next) {
 stockProductSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'businessProfile',
-    select: 'walletAddress'
+    select: 'walletAddress shippingCostStandard shippingTimeStandard shippingCostExpress shippingTimeExpress shippingRadius shippingOndemandTime shippingOndemandCost'
   })
 
   next()

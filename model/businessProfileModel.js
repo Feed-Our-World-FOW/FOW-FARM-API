@@ -24,18 +24,31 @@ const businessProfileSchema = new mongoose.Schema(
     },
     shippingCostStandard: {
       type: Number,
+      default: 0
     },
     shippingTimeStandard: {
-      type: String
+      type: String,
+      default: "7 - 14 business days"
     },
     shippingCostExpress: {
-      type: Number
+      type: Number,
+      default: 1
     },
-    shippingTimeExxpress: {
-      type: String
+    shippingTimeExpress: {
+      type: String,
+      default: "3 - 5 business days"
     },
     shippingRadius: {
-      type: Number
+      type: Number,
+      default: 100
+    },
+    shippingOndemandTime: {
+      type: String,
+      default: "45 - 60 business days"
+    },
+    shippingOndemandCost: {
+      type: Number,
+      default: 0
     },
     // stockProduct: {
 

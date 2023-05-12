@@ -127,6 +127,20 @@ exports.addItem = catchAsync(async (req, res, next) => {
 
     for(let i = 0; i < cart.items.length; i++) {
       if(cart.items[i].stockProduct) {
+        console.log("Stock Product")
+        if(ondemand) {
+          return next(new AppError(`You can't add stock product and ondemand product at a same time`, 404))
+        }
+      } else if(cart.items[i].ondemandProduct) {
+        console.log("ondemand product")
+        if(stock) {
+          return next(new AppError(`You can't add stock product and ondemand product at a same time`, 404))
+        }
+      }
+    }
+
+    for(let i = 0; i < cart.items.length; i++) {
+      if(cart.items[i].stockProduct) {
 
         if(JSON.stringify(cart.items[i].stockProduct._id) === JSON.stringify(productId)) {
           return next(new AppError(`Item already exists`, 404))

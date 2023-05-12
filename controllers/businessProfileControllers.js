@@ -26,10 +26,33 @@ exports.getMyProfile = (req, res, next) => {
 }
 
 exports.getAllProfiles = factory.getAll(BusinessProfile)
-// exports.getSingleProfile = factory.getOne(BusinessProfile, { path: 'address reviews' })
 exports.getSingleProfile = factory.getOne(BusinessProfile, { path: 'reviews stockProducts ondemandProducts' })
-exports.updateProfile = factory.updateOne(BusinessProfile)
 exports.deleteProfile = factory.deleteOne(BusinessProfile)
+
+
+exports.updateProfile = catchAsync(async (req, res, next) => {
+  const business = await BusinessProfile.findById(req.params.id)
+
+  if(JSON.stringify(business.user._id) !== JSON.stringify(req.user.id)) {
+    return next(new AppError(`You aren't the owner of this business profile`, 404))
+  }
+
+  const doc = await BusinessProfile.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  })
+
+  if (!doc) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: doc
+    }
+  });
+})
 
 
 exports.getBusinessStats = catchAsync(async (req, res) => {

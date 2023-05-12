@@ -8,7 +8,8 @@ const {
   updateBuy,
   deleteBuy,
   getMyOrderForConsumer,
-  getMyOrdersForBusiness
+  getMyOrdersForBusiness,
+  checkout
 } = require('../controllers/buyControllers')
 
 const {
@@ -20,8 +21,11 @@ const router = express.Router()
 
 router.use(protect)
 
+
 router.route('/myOrder').get(restrictTo('user'), getMyOrderForConsumer)
 router.route('/businessOrder').get(restrictTo('business'), getMyOrdersForBusiness)
+
+router.route('/checkout/:id').post(restrictTo('user'), checkout)
 
 router.route('/')
   .post(restrictTo('user'), setConsumerProfile, createBuy)

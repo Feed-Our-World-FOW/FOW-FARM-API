@@ -71,6 +71,17 @@ buySchema.pre(/^find/, function(next) {
   next()
 })
 
+// buySchema.pre(/^find/, function(next) {
+//   // this.populate({
+//   //   path: 'totalAmount',
+//   //   select: 'su'
+//   // })
+//   console.log("Total Amount")
+//   console.log(this)
+//   console.log(this.cart)
+//   next()
+// })
+
 buySchema.statics.calcOrderNumber = async function(consumerProfileId) {
   const stats = await this.aggregate([
     {
