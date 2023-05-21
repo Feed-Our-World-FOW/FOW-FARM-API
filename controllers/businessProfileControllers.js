@@ -54,6 +54,32 @@ exports.updateProfile = catchAsync(async (req, res, next) => {
   });
 })
 
+exports.updateMyBusinessProfile = catchAsync(async (req, res, next) => {
+  const myProfile = await BusinessProfile.findOne({ user: req.user.id })
+
+  if(!myProfile) {
+    return next(new AppError(`You don't have any business profile`, 404))
+  }
+  
+  const id = myProfile.id
+
+  const doc = await BusinessProfile.findByIdAndUpdate(id, req.body, {
+    new: true,
+    runValidators: true
+  })
+
+  if (!doc) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: doc
+    }
+  });
+})
+
 
 exports.getBusinessStats = catchAsync(async (req, res) => {
   const stats = await BusinessProfile.aggregate([

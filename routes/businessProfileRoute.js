@@ -11,7 +11,8 @@ const {
   getBusinessStats,
   getBusinessWithin,
   getDistances,
-  getMyDistances
+  getMyDistances,
+  updateMyBusinessProfile
 } = require('../controllers/businessProfileControllers')
 
 const {
@@ -34,6 +35,7 @@ router.route('/distance/:latlng/unit/:unit').get(getDistances)
 
 
 router.route('/myProfile').get(protect, getMyProfile, getAllProfiles)
+router.route('/myProfile').patch(protect, updateMyBusinessProfile)
 
 router.route('/')
   .post(restrictTo('business'), protect, createBusinessProfile)

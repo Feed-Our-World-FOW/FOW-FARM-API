@@ -9,11 +9,16 @@ const Cart = require('../model/cartModel')
 exports.createBuy = catchAsync(async (req, res, next) => {
   const businessProfile = await BusinessProfile.findById(req.body.businessProfile)
 
-  if(req.body.deliveryType === "express") {
-    req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingCostExpress
-  } else if(req.body.deliveryType === "standard") {
-    req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingCostStandard
+  if(typeof(req.body.cart.items[0].ondemandProduct) !== "undefined") {
+    req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingOndemandCost
+  } else {
+    if(req.body.deliveryType === "express") {
+      req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingCostExpress
+    } else if(req.body.deliveryType === "standard") {
+      req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingCostStandard
+    }
   }
+
   const doc = await Buy.create(req.body)
 
   res.status(200).json({

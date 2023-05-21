@@ -24,7 +24,7 @@ const {
 router.route('/myStockProduct').get(protect, getMyStockProduct)
 
 router.route('/')
-  .post(restrictTo('business'), protect, setBusinessId, check, createStockProduct)
+  .post(protect, restrictTo('business'), uploadstockProductPhoto, resizestockProductPhoto, setBusinessId, check, createStockProduct)
   .get(getAllStockProducts)
 
 router.use(protect)

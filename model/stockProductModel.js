@@ -50,10 +50,6 @@ const stockProductSchema = new mongoose.Schema(
       enum: ['yes', 'no'],
       required: [true, "Must select organic"]
     },
-    // expires: {
-    //   type: Date,
-    //   required: [true, "Must contain expire date"]
-    // },
     freshRemain: {
       type: Number,
       required: [true, "Must contain freshRemain"]

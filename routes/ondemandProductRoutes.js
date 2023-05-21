@@ -23,7 +23,7 @@ const {
 router.route('/myOndemandProduct').get(protect, getMyOndemandProduct)
 
 router.route('/')
-.post(restrictTo('business'), protect, setBusinessId, check, createOndemandProduct)
+.post(protect, restrictTo('business'), uploadOndemandProductPhoto, resizeOndemandProductPhoto, setBusinessId, check, createOndemandProduct)
 .get(getAllOndemandProduct)
 
 router.use(protect)

@@ -21,15 +21,29 @@ const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
   limits: {
-    fileSize: 1048576
-  }
+    fileSize: 1048576,
+    // onFileUploadLimit:(file) => {
+    //   return next(new AppError(`This file is too large, please submit a file less than or equal to 1MB`, 413));
+    // }
+  },
+  
 })
 
-exports.uploadUserPhoto = upload.single('photo')
+// exports.uploadUserPhoto = upload.single('photo')
+exports.uploadUserPhoto = (req, res, next) => {
+  upload.single('photo')(req, res, (err) => {
+    if(err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+      return next(new AppError(`This file is too large, please submit a file less than or equal to 1MB`, 413))
+    } else if(err) {
+      return next(err)
+    }
+    next()
+  })
+}
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if(!req.file) return next()
-  console.log(req.file)
+  console.log("file is: ", req.file)
 
   await sharp(req.file.buffer)
     .resize(500, 500)

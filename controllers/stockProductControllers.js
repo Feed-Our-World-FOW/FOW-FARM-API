@@ -62,10 +62,7 @@ exports.check = catchAsync(async (req, res, next) => {
   // }
   
   if(
-      !response.location?.coordinates || 
-      !response.shippingCost ||
-      response.shippingTime?.length === 0 ||
-      !response.shippingRadius
+      !response.location?.coordinates
     ) {
     return next(new AppError(`Please complete your Business profile before you procced`, 404))
   }
@@ -162,7 +159,6 @@ exports.createStockProduct = catchAsync(async (req, res, next) => {
     {
       producer: req.user.id,
       ...req.body,
-      // ...req.file,
     }
   )
 

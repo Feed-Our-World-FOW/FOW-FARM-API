@@ -59,12 +59,9 @@ exports.check = catchAsync(async (req, res, next) => {
   // if(!response) {
   //   return next(new AppError(`Can't find the document with that Id`, 404))
   // }
-  
+
   if(
-      !response.location?.coordinates || 
-      !response.shippingCost ||
-      response.shippingTime?.length === 0 ||
-      !response.shippingRadius
+      !response.location?.coordinates
     ) {
     return next(new AppError(`Please complete your Business profile before you procced`, 404))
   }
