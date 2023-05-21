@@ -32,7 +32,7 @@ router.route('/')
   .get(restrictTo('admin'), getAllBuy)
 
 router.route('/:id')
-  .get(restrictTo('admin'), getSingleBuy)
+  .get(getSingleBuy)
   .patch(restrictTo('user'), updateBuy)
   .delete(restrictTo('user'), deleteBuy)
 

@@ -37,6 +37,9 @@ const buySchema = new mongoose.Schema(
     totalAmount: {
       type: Number,
     },
+    receipt: {
+      type: String
+    },
     paid: {
       type: Boolean,
       default: false
