@@ -75,13 +75,13 @@ app.use((req, res, next) => {
 
 app.use('/public', express.static('public'))
 
-app.use('/api/v1/farm', farmRouter)
+// app.use('/api/v1/farm', farmRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
 // app.use('/api/v1/cart', cartRouter)
-app.use('/api/v1/addProduct', productRouter)
-app.use('/api/v1/reviewProduct', productReviewRouter)
-app.use('/api/v1/address', addressRouter)
+// app.use('/api/v1/addProduct', productRouter)
+// app.use('/api/v1/reviewProduct', productReviewRouter)
+// app.use('/api/v1/address', addressRouter)
 
 app.use('/api/v1/business', businessProfileRouter)
 app.use('/api/v1/consumer', consumerProfileRouter)
