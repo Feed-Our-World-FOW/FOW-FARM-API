@@ -5,7 +5,8 @@ const {
   deleteReview,
   setFarmUserIds,
   getReview,
-  updateReview
+  updateReview,
+  getReviewForFarm
 } = require('../controllers/reviewControllers')
 
 const {
@@ -27,5 +28,10 @@ router
     .delete(restrictTo('user', 'admin'), deleteReview)
     .get(getReview)
     .patch(restrictTo('user', 'admin'), updateReview)
+
+router
+  .route('/farm/:farmId')
+    .post(restrictTo('user'), setFarmUserIds, createReview)
+    .get(getReviewForFarm)
 
 module.exports = router

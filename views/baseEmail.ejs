@@ -1,0 +1,225 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* CSS Styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+        color: #004d99;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    p {
+        color: #333333;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    .emoji {
+        font-size: 20px;
+        margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to FOW_FARM 😃</h1>
+    <p>Dear <%= firstName %>,</p>
+    <p>Thank you for creating an account with FOW_FARM! We are thrilled to have you join our community and contribute to the control of food in people's hands. 🌍🌱</p>
+    <p>FOW (Feed Our World) is a registered nonprofit organization dedicated to building a worldwide "on-demand" system that enables people to order food from anywhere. Our mission is to reduce waste by diverting food from areas of overabundance to areas of need.</p>
+    <p>We believe that by working together, we can make a significant impact on global food distribution and create a more sustainable future for all. 🤝</p>
+    <p>If you have any questions or need assistance, please don't hesitate to reach out to our support team. We're here to help you every step of the way. 💪</p>
+    <p>Once again, welcome to FOW_FARM! Get ready to embark on a journey of sustainable agriculture and positive change. Let's make a difference together! 🌱✨</p>
+    <p>Best regards,</p>
+    <p>The FOW_FARM Team</p>
+  </div>
+</div>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOW Email</title>
+</head>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        border: 3px solid #E5E4E4;
+        border-radius: 30px;
+        width: 290px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .img {
+        width: 120px;
+        height: 120px;
+    }
+
+    h1 {
+        font-size: large;
+        font-weight: 800;
+        margin: 0;
+        padding: 0;
+    }
+
+    .box {
+        width: 250px;
+        display: flex;
+        flex-direction: column;
+        margin: 20px 0;
+    }
+
+    p {
+        font-size: small;
+        margin: 4px 0;
+        padding: 0;
+    }
+
+    .points {
+        margin: 5px 0;
+    }
+
+    li {
+        margin: 0;
+        font-size: small;
+    }
+
+    .light-txt {
+        color: #666666;
+    }
+
+    .down {
+        margin-top: 10px;
+    }
+
+    .down > p {
+        margin: 0;
+    }
+
+    .bottom {
+        background-color: #F6FDF7;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-top: 3px solid #E5E4E4;
+        border-end-end-radius: 30px;
+        border-bottom-left-radius: 30px;
+        padding-bottom: 10px;
+    }
+
+    .bottom > h1 {
+        margin: 20px 0;
+    }
+
+    .bottom > p {
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+
+    .link-box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    a {
+        background-color: #5EC281;
+        margin: 0 3px;
+        width: 30px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .small-img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .last-txt {
+        font-size: x-small;
+    }
+    
+    
+</style>
+<body>
+    <div class="container">
+        <img src="https://storage.googleapis.com/fow-farm/fow.png" alt="" class="img"></img>
+        <h1>Welcome to Fow!</h1>
+        <div class="box">
+            <p>Hello <%= firstName %></p>
+            <p>Welcome to Feed Our World, the non-profit organization that puts food control in the hands of the people.</p>
+            <p>Together, we can significantly reduce food waste, global hunger, and low incomes for producers</p>
+            <p>As a <b>consumer</b>, you will be able to:</p>
+            <ul class="points">
+                <li>Connect directly with multiple local producers.</li>
+                <li>Have detailed and reliable information about the food.</li>
+                <li>Purchase the food in stock and on-demand.</li>
+            </ul>
+            <p>So, enjoy every experience and purpose within FOW!</p>
+            <p>See you in the Dapp!</p>
+            <p class="light-txt">Please do not reply to this email, as it is automatically generated.</p>
+            <div class="down">
+                <p>Best</p>
+                <p>FOW Team</p>
+            </div>
+
+        </div>
+        <div class="bottom">
+            <h1>Feed Our World</h1>
+            <div class="link-box">
+                <a href="https://www.facebook.com/FeedOurWorld.IO" target="#">
+                    <img src="https://storage.googleapis.com/fow-farm/Facebook.png" class="small-img"></img>
+                </a>
+                <a href="https://www.instagram.com/feedourworld.io/" target="#">
+                    <img src="https://storage.googleapis.com/fow-farm/Instagram.png" class="small-img"></img>
+                </a>
+                <a href="https://twitter.com/FeedOurWorld1" target="#">
+                    <img src="https://storage.googleapis.com/fow-farm/Twitter.png" class="small-img"></img>
+                </a>
+                <a href="https://www.linkedin.com/company/feed-our-world/" target="#">
+                    <img src="https://storage.googleapis.com/fow-farm/Linkedin.png" class="small-img"></img>
+                </a>
+                <a href="https://www.youtube.com/@feedourworld./" target="#">
+                    <img src="https://storage.googleapis.com/fow-farm/Youtube.png" class="small-img"></img>
+                </a>
+            </div>
+            <p>2360 Hood Avenue, San Diego, CA, 92123</p>
+            <p class="last-txt">You received this email because you registered on FOW.</p>
+        </div>
+    </div>
+</body>
+</html>

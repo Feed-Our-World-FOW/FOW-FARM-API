@@ -43,7 +43,14 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   const url = `${req.protocol}://${req.get('host')}/me`
   // console.log(url)
-  await new Email(newUser, url).sendWelcome()
+
+  if(req.body.role === "user") {
+    await new Email(newUser, url).sendWelcomeToConsumer()
+  } else if(req.body.role === "business") {
+
+    await new Email(newUser, url).sendWelcomeToProducer()
+  }
+
 
   createAndSendToken(newUser, 201, res)
 })

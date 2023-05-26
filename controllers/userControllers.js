@@ -43,7 +43,7 @@ exports.uploadUserPhoto = (req, res, next) => {
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if(!req.file) return next()
-  console.log("file is: ", req.file)
+  // console.log("file is: ", req.file)
 
   await sharp(req.file.buffer)
     .resize(500, 500)

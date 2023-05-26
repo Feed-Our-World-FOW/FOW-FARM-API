@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
-const pug = require('pug');
+// const pug = require('pug');
 const htmlToText = require('html-to-text');
+const ejs = require('ejs');
 
 module.exports = class Email {
   constructor(user, url) {
@@ -11,40 +12,42 @@ module.exports = class Email {
   }
 
   newTransport() {
-    try {
-      if (process.env.NODE_ENV === 'production') {
-        // Sendgrid
-        return nodemailer.createTransport({
-          service: 'SendGrid',
-          auth: {
-            user: process.env.SENDGRID_USERNAME,
-            pass: process.env.SENDGRID_PASSWORD
-          }
-        });
-      }
-  
+    if (process.env.NODE_ENV === 'production') {
+      // Sendgrid
       return nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
+        service: 'SendGrid',
         auth: {
-          user: process.env.EMAIL_USERNAME,
-          pass: process.env.EMAIL_PASSWORD
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD
         }
       });
-    } catch (error) {
-      console.log(error)
     }
+
+    return nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    });
     
   }
 
   // Send the actual email
   async send(template, subject) {
     // 1) Render HTML based on a pug template
-    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+    // const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+    //   firstName: this.firstName,
+    //   url: this.url,
+    //   subject
+    // });
+
+    const html = await ejs.renderFile(`${__dirname}/../views/${template}.ejs`, {
       firstName: this.firstName,
       url: this.url,
       subject
-    });
+    })
 
     // 2) Define email options
     const mailOptions = {
@@ -60,8 +63,16 @@ module.exports = class Email {
     await this.newTransport().sendMail(mailOptions);
   }
 
-  async sendWelcome() {
-    await this.send('welcome', 'Welcome to the FOW-FARM!');
+  // async sendWelcome() {
+  //   await this.send('welcome', 'Welcome to the FOW-FARM!');
+  // }
+
+  async sendWelcomeToConsumer() {
+    await this.send('welcomeConsumerEmail', 'Welcome to the FOW-FARM!');
+  }
+
+  async sendWelcomeToProducer() {
+    await this.send('welcomeProducerEmail', 'Welcome to the FOW-FARM!');
   }
 
   async sendPasswordReset() {

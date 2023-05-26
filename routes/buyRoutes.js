@@ -9,7 +9,7 @@ const {
   deleteBuy,
   getMyOrderForConsumer,
   getMyOrdersForBusiness,
-  checkout
+  getAmount
 } = require('../controllers/buyControllers')
 
 const {
@@ -25,7 +25,8 @@ router.use(protect)
 router.route('/myOrder').get(restrictTo('user'), getMyOrderForConsumer)
 router.route('/businessOrder').get(restrictTo('business'), getMyOrdersForBusiness)
 
-router.route('/checkout/:id').post(restrictTo('user'), checkout)
+// router.route('/checkout/:id').post(restrictTo('user'), checkout)
+router.route('/getAmount').get(restrictTo('user'), setConsumerProfile, getAmount)
 
 router.route('/')
   .post(restrictTo('user'), setConsumerProfile, createBuy)
@@ -33,7 +34,7 @@ router.route('/')
 
 router.route('/:id')
   .get(getSingleBuy)
-  .patch(restrictTo('user'), updateBuy)
+  .patch(restrictTo('business'), updateBuy)
   .delete(restrictTo('user'), deleteBuy)
 
 module.exports = router

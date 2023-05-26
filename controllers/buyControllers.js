@@ -5,6 +5,7 @@ const AppError = require('../utils/appError')
 const catchAsync = require('../utils/catchAsync')
 const factory = require('./handleFactory')
 const Cart = require('../model/cartModel')
+const axios = require('axios')
 
 exports.createBuy = catchAsync(async (req, res, next) => {
   const businessProfile = await BusinessProfile.findById(req.body.businessProfile)
@@ -94,26 +95,39 @@ exports.getMyOrdersForBusiness = catchAsync(async (req, res, next) => {
   })
 })
 
-exports.checkout = catchAsync(async (req, res, next) => {
-  const consumerProfile = await ConsumerProfile.findOne({ user: req.user.id })
-  if(!consumerProfile) {
-    return next(new AppError(`You don't have any consumer profile`, 404))
+exports.getAmount = catchAsync(async (req, res, next) => {
+
+  // console.log(req.query)
+  
+  const businessProfile = await BusinessProfile.findById(req.body.businessProfile)
+
+  if(typeof(req.body.cart.items[0].ondemandProduct) !== "undefined") {
+    req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingOndemandCost
+    
+  } else {
+    if(req.query.deliveryType === "express") {
+      req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingCostExpress
+      
+    } else if(req.query.deliveryType === "standard") {
+      req.body.totalAmount = req.body.cart.subTotal + businessProfile.shippingCostStandard
+      
+    }
   }
 
-  // const order = await Buy.find({ consumerProfile: consumerProfile._id })
-  const order = await Buy.findById(req.params.id)
-  
-  if(!order) {
-    return next(new AppError(`You don't have any order`, 404))
-  }
+  const celoData = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=celo&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`)
 
-  const businessProfile = await BusinessProfile.findById(order.businessProfile)
+  const celoPrice = celoData.data[0].current_price
+  const totalAmountInCELO = celoPrice * req.body.totalAmount
 
-  if(!businessProfile.walletAddress) {
-    return next(new AppError(`This farm does not support pay on Crypto`, 404))
-  }
-  
-  
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: {
+        totalAmountInUSD: req.body.totalAmount,
+        totalAmountInCELO
+      }
+    }
+  })
 
 
 })
