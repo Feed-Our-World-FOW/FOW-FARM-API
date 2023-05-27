@@ -29,6 +29,7 @@ const favouriteRouter = require('./routes/favouriteFarmRoutes')
 const app = express()
 
 app.use(cors({
+  // origin: 'http://localhost:3000',
   origin: 'https://fow-farm.vercel.app',
   credentials: true
 }))
