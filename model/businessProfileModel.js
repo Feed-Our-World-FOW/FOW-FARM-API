@@ -10,8 +10,7 @@ const businessProfileSchema = new mongoose.Schema(
     },
     walletAddress: {
       type: String,
-      unique: true,
-      default: "0x00000000000000000000000000000000000000000"
+      unique: true
     },
     location: {
       type: {
