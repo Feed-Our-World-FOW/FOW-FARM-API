@@ -38,7 +38,7 @@ router.route('/myProfile').get(protect, getMyProfile, getAllProfiles)
 router.route('/myProfile').patch(protect, updateMyBusinessProfile)
 
 router.route('/')
-  .post(restrictTo('business'), protect, createBusinessProfile)
+  .post(protect, restrictTo('business'), createBusinessProfile)
   .get(getAllProfiles)
 
 router.use(protect)
