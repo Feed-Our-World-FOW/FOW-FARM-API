@@ -11,7 +11,8 @@ const {
   check,
   uploadstockProductPhoto,
   resizestockProductPhoto,
-  getMyStockProduct
+  getMyStockProduct,
+  checkOwner
 } = require('../controllers/stockProductControllers')
 
 const {
@@ -32,7 +33,7 @@ router.use(protect)
 router.route('/:id')
   .get(getSingleStockProduct)
   .patch(uploadstockProductPhoto, resizestockProductPhoto, updateStockProduct)
-  .delete(deleteStockProduct)
+  .delete(restrictTo('business'), checkOwner, deleteStockProduct)
 
 // router.route('/:id/add')
 //   .get(getTotal)

@@ -56,15 +56,22 @@ exports.setBusinessId = catchAsync(async(req, res, next) => {
 
 exports.check = catchAsync(async (req, res, next) => {
   const response = await BusinessProfile.findById(req.body.businessProfile)
-
-  // if(!response) {
-  //   return next(new AppError(`Can't find the document with that Id`, 404))
-  // }
   
   if(
-      !response.location?.coordinates
+      !response.location?.coordinates ||
+      !response.walletAddress
     ) {
     return next(new AppError(`Please complete your Business profile before you procced`, 404))
+  }
+
+  next()
+})
+
+exports.checkOwner = catchAsync(async (req, res, next) => {
+  const stockProduct = await StockProduct.findById(req.params.id)
+
+  if(JSON.stringify(stockProduct.producer.id) !== JSON.stringify(req.user.id)) {
+    return next(new AppError(`You don't have permission to delete any product of this farm`))
   }
 
   next()

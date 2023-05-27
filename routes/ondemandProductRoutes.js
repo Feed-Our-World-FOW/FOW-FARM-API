@@ -11,7 +11,8 @@ const {
   check,
   uploadOndemandProductPhoto,
   resizeOndemandProductPhoto,
-  getMyOndemandProduct
+  getMyOndemandProduct,
+  checkOwner
 } = require('../controllers/ondemandProductControllers')
 
 const {
@@ -31,6 +32,6 @@ router.use(protect)
 router.route('/:id')
   .get(getSingleOndemandProduct)
   .patch(uploadOndemandProductPhoto, resizeOndemandProductPhoto, updateOndemandProduct)
-  .delete(deleteOndemandProduct)
+  .delete(restrictTo('business'), checkOwner, deleteOndemandProduct)
 
 module.exports = router
