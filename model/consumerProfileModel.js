@@ -17,10 +17,6 @@ const consumerProfileSchema = new mongoose.Schema(
       address: String,
       description: String
     },
-    walletAddress: {
-      type: String,
-      unique: true
-    },
     orders: {
       type: Number,
       default: 0
