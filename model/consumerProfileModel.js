@@ -21,10 +21,10 @@ const consumerProfileSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-    favourite: {
-      type: Number,
-      default: 0
-    }
+    // favourite: {
+    //   type: Number,
+    //   default: 0
+    // }
   },
   {
     toJSON: { virtuals: true },
