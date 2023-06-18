@@ -12,7 +12,8 @@ const {
   getBusinessWithin,
   getDistances,
   getMyDistances,
-  updateMyBusinessProfile
+  updateMyBusinessProfile,
+  getMyDistanceFromFarm
 } = require('../controllers/businessProfileControllers')
 
 const {
@@ -30,7 +31,8 @@ router.route('/:businessId/addStockProduct', stockProductRouter)
 
 router.route('/farms-within/:distance/center/:latlng/unit/:unit').get(getBusinessWithin)
 
-router.route('/distance/mylocation/unit/:unit').get(restrictTo('user'), protect, getMyDistances)
+router.route('/distance/mylocation/unit/:unit').get(protect, restrictTo('user'), getMyDistances)
+router.route('/distance/:farmId/unit/:unit').get(protect, restrictTo('user'), getMyDistanceFromFarm)
 router.route('/distance/:latlng/unit/:unit').get(getDistances)
 
 

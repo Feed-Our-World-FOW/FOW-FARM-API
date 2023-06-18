@@ -222,3 +222,63 @@ exports.getMyDistances = catchAsync(async (req, res, next) => {
     }
   })
 })
+
+
+function toRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2, unit = 'km') {
+  const R = unit === 'mi' ? 3963.2 : 6378.1; // Radius of the Earth in miles or kilometers
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+
+  return distance;
+}
+
+
+exports.getMyDistanceFromFarm = catchAsync(async (req, res, next) => {
+  const consumerProfile = await ConsumerProfile.findOne({ user: req.user.id })
+  const businessProfile = await BusinessProfile.findById(req.params.farmId)
+  const unit = req.params.unit
+
+  if(!consumerProfile) {
+    return next(new AppError(`No consumer profile exists with that Id`, 404))
+  }
+  
+  if(!consumerProfile.location || !consumerProfile.location.coordinates) {
+    return next(new AppError(`Please update your location`, 404))
+  }
+
+  const latlng = consumerProfile.location.coordinates
+  const lat1 = latlng[1]
+  const lon1 = latlng[0]
+
+  if(!businessProfile.location || !businessProfile.location.coordinates) {
+    return next(new AppError(`This farm doesn't update it's location`, 404))
+  }
+  
+  const latlng2 = businessProfile.location.coordinates
+  const lat2 = latlng2[1]
+  const lon2 = latlng2[0]
+  
+  if(!lat1 || !lon1 || !lat2 || !lon2) {
+    next(new AppError('Please provide latitude and longitude in the format of lat, lng', 400))
+  }
+
+  const dis = calculateDistance(lat1, lon1, lat2, lon2, unit)
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: dis
+    }
+  })
+})
