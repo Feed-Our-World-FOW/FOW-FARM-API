@@ -3,7 +3,7 @@ const gc = require('../config/index')
 const catchAsync = require('./catchAsync')
 const AppError = require('./appError')
 const { format } = require('url')
-const bucket = gc.bucket('fow-farm') // should be your bucket name
+const bucket = gc.bucket('fow-farm-mvp') // should be your bucket name
 
 /**
  *
